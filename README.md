@@ -1,6 +1,6 @@
-<!-- Profile README for Basavaraj Angadi -->
+<!-- Profile README for Bhargav Angadi -->
 
-<h1 align="center">👋 Hi, I'm Bhargav Angadi</h1>
+<h1 align="center">👋 Hi, I'm Basavaraj Angadi</h1>
 <h3 align="center">📊 Data Analyst | Excel | Power BI | Tableau | SQL | Python</h3>
 
 ---
