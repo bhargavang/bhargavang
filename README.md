@@ -117,11 +117,3 @@ src="https://streak-stats.demolab.com?user=bhargavang&theme=tokyonight&hide_bord
 
 </p>
 
----
-
-
-
-
----
-
-<h3 align="center">⚡ Designing data experiences that scale — one dashboard at a time.</h3>
