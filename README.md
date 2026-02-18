@@ -1,67 +1,108 @@
-<!-- Profile README for Bhargav Angadi -->
+<!-- 🚀 FAANG LEVEL PROFILE README — Bhargav Angadi -->
 
-<h1 align="center">👋 Hi, I'm Bhargav Angadi</h1>
-<h3 align="center">📊 Data Analyst | Excel | Power BI | Tableau | SQL | Python</h3>
+<p align="center">
+<img src="https://readme-typing-svg.herokuapp.com?font=Inter&weight=600&size=30&duration=2800&pause=800&color=22D3EE&center=true&vCenter=true&width=900&lines=Bhargav+Angadi;Data+Analyst+%7C+Power+BI+%7C+SQL+%7C+Python;Designing+Data+Experiences+That+Scale"/>
+</p>
 
----
+<h3 align="center">📊 Data Analyst • Dashboard Engineer • Insight Builder</h3>
 
-### 🧠 About Me
-🚀 Passionate **Data Analyst** who loves transforming raw data into actionable insights.  
-💡 Skilled in **data cleaning, visualization, and storytelling** using modern BI tools.  
-🎯 Always learning and exploring ways to make data more meaningful!
-
----
-
-### 🛠️ Skills & Tools
-
-<div align="center">
-
-| Category | Tools / Skills |
-|-----------|----------------|
-| 🧾 **Data Manipulation & Analysis** | ![Excel](https://img.shields.io/badge/Excel-217346?style=for-the-badge&logo=microsoft-excel&logoColor=white) ![SQL](https://img.shields.io/badge/SQL-CC2927?style=for-the-badge&logo=databricks&logoColor=white) ![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white) |
-| 📈 **Data Visualization** | ![Power BI](https://img.shields.io/badge/Power%20BI-F2C811?style=for-the-badge&logo=power-bi&logoColor=black) ![Tableau](https://img.shields.io/badge/Tableau-E97627?style=for-the-badge&logo=tableau&logoColor=white) |
-| ⚙️ **Other Tools** | ![Jupyter](https://img.shields.io/badge/Jupyter-F37626?style=for-the-badge&logo=jupyter&logoColor=white) ![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white) |
-
-</div>
+<p align="center">
+I build modern analytics dashboards that transform complex datasets into clear business decisions.
+</p>
 
 ---
 
-### 📊 Featured Projects
-🔹 [**PhonePe Data Analysis**](#) – Analyzed digital transaction patterns using Power BI.  
-🔹 [**Sales Superstore Dashboard**](#) – Built interactive Tableau dashboard to visualize sales insights.  
-🔹 [**Road Accident Analysis**](#) – Cleaned and visualized accident data using Python & Excel.  
+## 🧠 Profile
 
-> 🖼️ *More projects coming soon — stay tuned!*
-
----
-
-### 📫 Connect With Me
-
-<div align="center">
-
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)]((https://www.linkedin.com/in/basavarajangadi/))
-[![Gmail](https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:Bhargav.angadi@gmail.com)
-[![GitHub](https://img.shields.io/badge/GitHub-000000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/bhargavang)
-[![Portfolio](https://img.shields.io/badge/Portfolio-FF7139?style=for-the-badge&logo=firefox&logoColor=white)](https://www.datascienceportfol.io/Bhargavangadi)
-
-</div>
+- 📊 Data Analyst specializing in **Power BI, Tableau & SQL Analytics**
+- 🧹 Strong focus on **Data Cleaning, KPI Design & Visualization**
+- 🐍 Python for exploratory analysis & automation
+- 🚀 Building industry-level analytics portfolio projects
+- 🎯 Goal: Deliver decision-ready dashboards used by real teams
 
 ---
 
-### ⚡ Fun Fact  
-> “Without data, you're just another person with an opinion.” – W. Edwards Deming
+## ⚙️ Core Stack
+
+<p align="center">
+
+<img src="https://skillicons.dev/icons?i=python,mysql,github,vscode" />
+
+<br><br>
+
+<img src="https://img.shields.io/badge/Power%20BI-Analytics-F2C811?style=for-the-badge&logo=power-bi&logoColor=black"/>
+<img src="https://img.shields.io/badge/Tableau-Dashboard-E97627?style=for-the-badge&logo=tableau&logoColor=white"/>
+<img src="https://img.shields.io/badge/Excel-Data%20Modeling-217346?style=for-the-badge&logo=microsoft-excel&logoColor=white"/>
+<img src="https://img.shields.io/badge/SQL-Querying-CC2927?style=for-the-badge"/>
+
+</p>
 
 ---
 
-### 📈 GitHub Stats
+## 🏆 Selected Work
 
-<div align="center">
+### 📱 PhonePe Transaction Analytics
+Power BI dashboards exploring transaction behavior, trends & digital adoption patterns.
 
-![Bhargav's GitHub stats](https://github-readme-stats.vercel.app/api?username=bhargavang&show_icons=true&theme=tokyonight)  
-![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=bhargavang&layout=compact&theme=tokyonight)
+### 🛒 Sales Superstore Intelligence
+Tableau KPI dashboards tracking performance, profit, and regional insights.
 
-</div>
+### 🚦 Road Accident Analytics
+Python + Excel pipeline for cleaning datasets and building visual insight reports.
 
 ---
 
-<h3 align="center">💬 Thanks for visiting my profile! Let's connect and grow together 🚀</h3>
+## 📈 Engineering Metrics
+
+<p align="center">
+<img src="https://github-readme-stats.vercel.app/api?username=bhargavang&show_icons=true&theme=tokyonight&hide_border=true&border_radius=12" height="165"/>
+<img src="https://github-readme-stats.vercel.app/api/top-langs/?username=bhargavang&layout=compact&theme=tokyonight&hide_border=true&border_radius=12" height="165"/>
+</p>
+
+<p align="center">
+<img src="https://streak-stats.demolab.com?user=bhargavang&theme=tokyonight&hide_border=true"/>
+</p>
+
+---
+
+## 🌐 Connect
+
+<p align="center">
+
+<a href="https://www.linkedin.com/in/basavarajangadi/">
+<img src="https://img.shields.io/badge/LinkedIn-Network-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white"/>
+</a>
+
+<a href="mailto:Bhargav.angadi@gmail.com">
+<img src="https://img.shields.io/badge/Gmail-Contact-D14836?style=for-the-badge&logo=gmail&logoColor=white"/>
+</a>
+
+<a href="https://github.com/bhargavang">
+<img src="https://img.shields.io/badge/GitHub-Explore-000000?style=for-the-badge&logo=github&logoColor=white"/>
+</a>
+
+<a href="https://www.datascienceportfol.io/Bhargavangadi">
+<img src="https://img.shields.io/badge/Portfolio-View-FF7139?style=for-the-badge&logo=firefox&logoColor=white"/>
+</a>
+
+</p>
+
+---
+
+## 🐍 Contribution Graph
+
+<p align="center">
+<img src="https://raw.githubusercontent.com/bhargavang/bhargavang/output/github-contribution-grid-snake.svg"/>
+</p>
+
+---
+
+## 👁️ Profile Views
+
+<p align="center">
+<img src="https://komarev.com/ghpvc/?username=bhargavang&style=for-the-badge&color=22D3EE"/>
+</p>
+
+---
+
+<h3 align="center">⚡ Designing data experiences that scale — one dashboard at a time.</h3>
