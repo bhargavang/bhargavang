@@ -119,19 +119,8 @@ src="https://streak-stats.demolab.com?user=bhargavang&theme=tokyonight&hide_bord
 
 ---
 
-## 🐍 Contribution Graph
 
-<p align="center">
-<img src="https://raw.githubusercontent.com/bhargavang/bhargavang/output/github-contribution-grid-snake.svg"/>
-</p>
 
----
-
-## 👁️ Profile Views
-
-<p align="center">
-<img src="https://komarev.com/ghpvc/?username=bhargavang&style=for-the-badge&color=22D3EE"/>
-</p>
 
 ---
 
