@@ -23,8 +23,8 @@ const CONFIG = {
   email: 'bhargav.angadi@gmail.com',
   whatsapp: '917411946909',
   phone: '+91 74119 46909',
-  linkedin: 'https://www.linkedin.com/in/basavaraj-angadi-5a7114405/',
-  linkedinHandle: 'Basavaraj Angadi',
+  linkedin: 'https://www.linkedin.com/in/bhargavangadi/',
+  linkedinHandle: 'bhargavangadi',
   // The portfolio page that gets published to GitHub Pages from site/
   portfolioSource: join(ROOT, '..', 'portfolio', 'index.html'),
 
