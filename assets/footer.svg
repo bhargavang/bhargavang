@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 250" width="1200" height="250" role="img" aria-label="Let&#39;s build something worth launching. bhargav.angadi@gmail.com, +91 74119 46909, replies within 24 hours.">
+<defs>
+<linearGradient id="card" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#131418"/><stop offset="1" stop-color="#0b0c0e"/></linearGradient>
+<pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse"><path d="M48 0H0V48" fill="none" stroke="#ffffff" stroke-opacity=".035"/></pattern>
+
+</defs>
+<style>.serif{font-family:'Iowan Old Style','Palatino Linotype',Palatino,'Book Antiqua',Georgia,'Times New Roman',serif}.sans{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif}.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace}
+.in{animation:in 1s cubic-bezier(.16,1,.3,1) both}
+.d1{animation-delay:0.12s}.d2{animation-delay:0.24s}.d3{animation-delay:0.36s}.d4{animation-delay:0.48s}.d5{animation-delay:0.60s}.d6{animation-delay:0.72s}.d7{animation-delay:0.84s}.d8{animation-delay:0.96s}.d9{animation-delay:1.08s}
+@keyframes in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.pulse{animation:pulse 2s ease-in-out infinite}@keyframes pulse{50%{opacity:.3}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}</style>
+
+<rect x=".5" y=".5" width="1199" height="249" rx="22" fill="url(#card)" stroke="#22252b"/><rect x=".5" y=".5" width="1199" height="249" rx="22" fill="url(#grid)"/>
+<g class="in"><text x="56" y="58" class="mono" font-size="11" fill="#6f6f72" letter-spacing="2.5">// END OF FILE</text></g>
+<g class="in d1"><text x="52" y="128" class="serif" font-size="56" fill="#ece8e1">Let's build something</text></g>
+<g class="in d2"><text x="52" y="188" class="serif" font-size="56" fill="#e3c78f" font-style="italic">worth launching.</text></g>
+<g class="in d3"><text x="56" y="224" class="mono" font-size="11" fill="#6f6f72" letter-spacing="1.8">BHARGAV.ANGADI@GMAIL.COM  ·  +91 74119 46909  ·  REPLIES &lt; 24H</text></g>
+<circle cx="980" cy="125" r="104" fill="none" stroke="#22252b"/>
+<circle cx="980" cy="125" r="92" fill="none" stroke="#c8a465" stroke-opacity=".45" stroke-dasharray="1 8"><animateTransform attributeName="transform" type="rotate" from="0 980 125" to="360 980 125" dur="60s" repeatCount="indefinite"/></circle>
+<path d="M928 210 Q918 210 918 200 V118 A62 62 0 0 1 1042 118 V200 Q1042 210 1032 210 Z" fill="#141416" stroke="#c8a465" stroke-opacity=".5"/>
+<text x="980" y="160" class="serif" font-size="56" fill="#e3c78f" font-style="italic" text-anchor="middle">BA</text>
+</svg>

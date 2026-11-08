@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" width="1200" height="120" role="img" aria-label="03 Services: What I build for clients.">
+<defs>
+<linearGradient id="card" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#131418"/><stop offset="1" stop-color="#0b0c0e"/></linearGradient>
+<pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse"><path d="M48 0H0V48" fill="none" stroke="#ffffff" stroke-opacity=".035"/></pattern>
+<linearGradient id="tl" gradientUnits="userSpaceOnUse" x1="780" y1="0" x2="1160" y2="0"><stop offset="0" stop-color="#c8a465" stop-opacity="0"/><stop offset="1" stop-color="#c8a465" stop-opacity=".7"/></linearGradient>
+</defs>
+<style>.serif{font-family:'Iowan Old Style','Palatino Linotype',Palatino,'Book Antiqua',Georgia,'Times New Roman',serif}.sans{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif}.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,'Liberation Mono',monospace}
+.in{animation:in 1s cubic-bezier(.16,1,.3,1) both}
+.d1{animation-delay:0.12s}.d2{animation-delay:0.24s}.d3{animation-delay:0.36s}.d4{animation-delay:0.48s}.d5{animation-delay:0.60s}.d6{animation-delay:0.72s}.d7{animation-delay:0.84s}.d8{animation-delay:0.96s}.d9{animation-delay:1.08s}
+@keyframes in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.pulse{animation:pulse 2s ease-in-out infinite}@keyframes pulse{50%{opacity:.3}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}</style>
+
+<rect x=".5" y=".5" width="1199" height="119" rx="18" fill="url(#card)" stroke="#22252b"/><rect x=".5" y=".5" width="1199" height="119" rx="18" fill="url(#grid)"/>
+<g class="in"><text x="40" y="44" class="mono" font-size="12" fill="#ece8e1" letter-spacing="2.5"><tspan fill="#c8a465">03</tspan><tspan fill="#6f6f72">  ·  SERVICES</tspan></text></g>
+<g class="in d1"><text x="38" y="96" class="serif" font-size="48" fill="#ece8e1">What I build <tspan font-style="italic" fill="#e3c78f">for clients</tspan>.</text></g>
+<text x="1160" y="44" class="mono" font-size="11" fill="#6f6f72" text-anchor="end" letter-spacing="2">FREELANCE</text>
+<line x1="780" y1="84" x2="1160" y2="84" stroke="url(#tl)"/>
+<circle cx="780" cy="84" r="3" fill="#e3c78f"><animate attributeName="cx" values="780;1160" dur="5s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;.1;.85;1" dur="5s" repeatCount="indefinite"/></circle>
+</svg>

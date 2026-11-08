@@ -16,10 +16,12 @@ jobs:
       - name: Generate GitHub Contribution Snake
         uses: Platane/snk@v3
         with:
-          github_user_name: bhargavang
+          github_user_name: ${{ github.repository_owner }}
+          # The first two files are the ones your old README used; the gold one matches the new design.
           outputs: |
             dist/github-contribution-grid-snake.svg
             dist/github-contribution-grid-snake-dark.svg?palette=github-dark
+            dist/github-contribution-grid-snake-gold.svg?color_snake=#e3c78f&color_dots=#1a1c21,#4a3f2b,#7a6540,#a6884f,#e3c78f
 
       - name: Push Snake Animation to Output Branch
         uses: crazy-max/ghaction-github-pages@v4
