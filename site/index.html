@@ -12,7 +12,7 @@
       fill the JSON in <script id="profile-data"> near the bottom.
       The "Path" section stays hidden until it has data.
   Previous version saved as index-v1-galaxy.html.
-  3D figure: "Xbot" model from the three.js examples (a Mixamo character).
+  3D avatar: built in code with three.js (no model file). Restyle him in LOOK, near the bottom.
   =====================================================================
 -->
 <title>Bhargav Angadi | Software Developer</title>
@@ -124,6 +124,11 @@
     box-shadow: 0 40px 120px -40px rgba(200, 164, 101, .38), inset 0 0 0 6px rgba(11, 12, 14, .6), inset 0 0 0 7px rgba(200, 164, 101, .14);
   }
   .arch canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .arch-photo {
+    position: absolute; left: 50%; bottom: 0; width: 112%; max-width: none; height: auto; transform: translateX(-50%);
+    transform-origin: 50% 100%; pointer-events: none; will-change: transform;
+    filter: drop-shadow(0 30px 40px rgba(0, 0, 0, .55));
+  }
   .arch-fallback { position: absolute; inset: 0; display: none; place-items: center; font: italic 132px/1 var(--serif); color: var(--gold-2); }
   .arch.failed .arch-fallback { display: grid; }
   .arch-loading { position: absolute; left: 0; right: 0; bottom: 22px; margin: 0; text-align: center; transition: opacity .4s; }
@@ -853,8 +858,8 @@
   })();
 </script>
 
-<!-- 3D figure in the hero arch (three.js). Falls back to a "BA" monogram if WebGL
-     or the model can't load. Model: "Xbot" from the three.js examples (Mixamo). -->
+<!-- 3D avatar in the hero arch (three.js), built in code: no model file to download.
+     Falls back to a "BA" monogram if WebGL isn't available. -->
 <script type="importmap">
   {
     "imports": {
@@ -865,15 +870,26 @@
 </script>
 <script type="module">
   import * as THREE from 'three';
-  import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
   import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 
-  const MODEL_URL = 'https://cdn.jsdelivr.net/gh/mrdoob/three.js@r160/examples/models/gltf/Xbot.glb';
+  // Bhargav's 3D avatar in a soft, Memoji-like style, built entirely in code
+  // (no model file to download). Change these values to restyle him.
+  const LOOK = {
+    skin: 0xf0c3a0,     // fair
+    hair: 0x1c1410,     // black, wavy
+    beardColor: 0x2a1f19,
+    tshirt: 0xf6f4f0,   // white tee
+    jacket: 0x2b2e35,   // charcoal bomber jacket
+    gold: 0xc8a465,     // glasses, zip lines, badge
+    beard: true,        // light trimmed beard
+    glasses: true,      // gold round glasses
+    smile: true,        // friendly smile
+  };
+
   const arch = document.querySelector('.arch');
   const canvas = arch && arch.querySelector('canvas');
   const hero = document.querySelector('.hero');
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const saveData = !!(navigator.connection && navigator.connection.saveData);
   const fail = () => arch.classList.add('failed');
 
   function dotTexture() {
@@ -889,14 +905,13 @@
     return new THREE.CanvasTexture(c);
   }
 
-  // A slowly turning halo of gold-to-steel particles behind the figure
+  // A slowly turning halo of gold-to-steel particles behind the avatar
   function makeHalo() {
     const count = 1800, pos = new Float32Array(count * 3), col = new Float32Array(count * 3);
     const gold = new THREE.Color('#e3c78f'), steel = new THREE.Color('#5d6f86');
     for (let i = 0; i < count; i++) {
       const r = 0.42 + Math.pow(Math.random(), 0.8) * 0.62;
-      const arm = (i % 3) / 3 * Math.PI * 2;
-      const a = arm + r * 3.2 + (Math.random() - 0.5) * 0.5;
+      const a = ((i % 3) / 3) * Math.PI * 2 + r * 3.2 + (Math.random() - 0.5) * 0.5;
       pos[i * 3] = Math.cos(a) * r;
       pos[i * 3 + 1] = Math.sin(a) * r;
       pos[i * 3 + 2] = (Math.random() - 0.5) * 0.08;
@@ -912,13 +927,13 @@
     }));
   }
 
-  // Fine gold dust drifting upward around the figure
+  // Fine gold dust drifting upward
   function makeDust() {
-    const count = 260, pos = new Float32Array(count * 3);
+    const count = 220, pos = new Float32Array(count * 3);
     for (let i = 0; i < count; i++) {
       pos[i * 3] = (Math.random() - 0.5) * 1.8;
-      pos[i * 3 + 1] = 0.3 + Math.random() * 1.9;
-      pos[i * 3 + 2] = (Math.random() - 0.5) * 1.4;
+      pos[i * 3 + 1] = 0.6 + Math.random() * 1.9;
+      pos[i * 3 + 2] = (Math.random() - 0.5) * 1.2 - 0.3;
     }
     const geo = new THREE.BufferGeometry();
     geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
@@ -928,6 +943,209 @@
     }));
   }
 
+  // ---------- Avatar geometry helpers
+  const HS = 0.5; // head size
+  // Unit sphere -> soft, rounded Memoji-style head: gentle jaw, slightly flatter face
+  function headDeform(v) {
+    if (v.y < 0) { const k = Math.pow(-v.y, 1.6); v.x *= 1 - 0.2 * k; v.z *= 1 - 0.1 * k; }
+    if (v.z > 0.6) v.z = 0.6 + (v.z - 0.6) * 0.8;
+    v.y *= 1.08;
+    return v;
+  }
+  function shapedSphere(seg, phiStart, phiLength, thetaStart, thetaLength) {
+    const g = new THREE.SphereGeometry(1, seg, Math.round(seg * 0.66), phiStart, phiLength, thetaStart, thetaLength);
+    const p = g.attributes.position, v = new THREE.Vector3();
+    for (let i = 0; i < p.count; i++) { v.fromBufferAttribute(p, i); headDeform(v); p.setXYZ(i, v.x, v.y, v.z); }
+    g.computeVertexNormals();
+    return g;
+  }
+  const smoothstep = (a, b, x) => { const t = Math.min(1, Math.max(0, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
+
+  function buildAvatar() {
+    const M = {
+      skin: new THREE.MeshPhysicalMaterial({ color: LOOK.skin, roughness: 0.5, sheen: 0.5, sheenColor: new THREE.Color(0xffcbb5), sheenRoughness: 0.5, clearcoat: 0.1, clearcoatRoughness: 0.6 }),
+      blush: new THREE.MeshStandardMaterial({ color: 0xf09a86, roughness: 0.8, transparent: true, opacity: 0.22, depthWrite: false }),
+      hair: new THREE.MeshPhysicalMaterial({ color: LOOK.hair, roughness: 0.38, sheen: 0.9, sheenColor: new THREE.Color(0x7a6352), sheenRoughness: 0.3, clearcoat: 0.25, clearcoatRoughness: 0.4 }),
+      stache: new THREE.MeshStandardMaterial({ color: LOOK.beardColor, roughness: 0.9, transparent: true, opacity: 0.9 }),
+      tshirt: new THREE.MeshPhysicalMaterial({ color: LOOK.tshirt, roughness: 0.9, sheen: 0.6, sheenColor: new THREE.Color(0xffffff), sheenRoughness: 0.7 }),
+      rib: new THREE.MeshStandardMaterial({ color: 0xe7e3dc, roughness: 0.9 }),
+      jacket: new THREE.MeshPhysicalMaterial({ color: LOOK.jacket, roughness: 0.55, sheen: 0.6, sheenColor: new THREE.Color(0x8a93a3), sheenRoughness: 0.5, side: THREE.DoubleSide }),
+      jacketRib: new THREE.MeshStandardMaterial({ color: 0x3a3e46, roughness: 0.85 }),
+      gold: new THREE.MeshStandardMaterial({ color: LOOK.gold, roughness: 0.28, metalness: 0.9 }),
+      eyeWhite: new THREE.MeshStandardMaterial({ color: 0xfbfaf8, roughness: 0.2 }),
+      iris: new THREE.MeshStandardMaterial({ color: 0x5b3a22, roughness: 0.25 }),
+      pupil: new THREE.MeshBasicMaterial({ color: 0x0b0807 }),
+      shine: new THREE.MeshBasicMaterial({ color: 0xffffff }),
+      lash: new THREE.MeshStandardMaterial({ color: 0x15100c, roughness: 0.7 }),
+      mouth: new THREE.MeshStandardMaterial({ color: 0x5a2320, roughness: 0.6, side: THREE.DoubleSide }),
+      teeth: new THREE.MeshStandardMaterial({ color: 0xfbf8f2, roughness: 0.4, side: THREE.DoubleSide }),
+      lip: new THREE.MeshStandardMaterial({ color: 0xd98d7f, roughness: 0.5, side: THREE.DoubleSide }),
+      lens: new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.05, transparent: true, opacity: 0.08, depthWrite: false }),
+    };
+    const SPH = new THREE.SphereGeometry(1, 48, 32);
+    const mesh = (geo, mat, pos, scale, rot) => {
+      const m = new THREE.Mesh(geo, mat);
+      if (pos) m.position.set(pos[0], pos[1], pos[2]);
+      if (scale) m.scale.set(scale[0], scale[1], scale[2]);
+      if (rot) m.rotation.set(rot[0], rot[1], rot[2]);
+      return m;
+    };
+    const tube = (pts, r, mat) => new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts.map((p) => new THREE.Vector3(...p))), 32, r, 10, false), mat);
+    const bend = (geo, k) => { // curve a flat shape so it hugs the face
+      const p = geo.attributes.position;
+      for (let i = 0; i < p.count; i++) p.setZ(i, p.getZ(i) - k * p.getX(i) * p.getX(i));
+      geo.computeVertexNormals();
+      return geo;
+    };
+
+    const avatar = new THREE.Group();
+
+    // ----- Body: white tee under a charcoal bomber jacket
+    const body = new THREE.Group();
+    avatar.add(body);
+    body.add(mesh(new THREE.CylinderGeometry(0.13, 0.15, 0.26, 40), M.skin, [0, 1.13, -0.01]));
+    const profile = [[0, 1.02], [0.15, 1.02], [0.21, 1.005], [0.36, 0.965], [0.48, 0.9], [0.56, 0.79], [0.6, 0.64], [0.62, 0.42], [0.62, 0.1]];
+    const prof = profile.map(([x, y]) => new THREE.Vector2(x, y));
+    body.add(mesh(new THREE.LatheGeometry(prof.map((v) => new THREE.Vector2(v.x * 0.985, v.y)), 96), M.tshirt, null, [1, 1, 0.62]));
+    body.add(mesh(new THREE.TorusGeometry(0.152, 0.018, 16, 48), M.rib, [0, 1.022, 0.005], null, [Math.PI / 2, 0, 0]));
+    const gap = 0.42; // jacket worn open at the front
+    body.add(mesh(new THREE.LatheGeometry(prof, 96, gap, Math.PI * 2 - gap * 2), M.jacket, null, [1, 1, 0.62]));
+    body.add(mesh(new THREE.TorusGeometry(0.205, 0.04, 16, 64, Math.PI * 2 - 1.0), M.jacketRib, [0, 1.03, -0.005], [1, 1, 0.8], [-Math.PI / 2, 0, Math.PI * 1.5 + 0.5]));
+    [-1, 1].forEach((s) => { // gold zip lines along the open jacket edges
+      const pts = profile.filter(([r]) => r >= 0.2).map(([r, y]) => [s * r * Math.sin(gap), y, 0.62 * r * Math.cos(gap) + 0.004]);
+      body.add(tube(pts, 0.007, M.gold));
+    });
+    body.add(mesh(new THREE.TorusGeometry(0.026, 0.006, 12, 40), M.gold, [0.28, 0.76, 0.302], null, [0, 0.5, 0]));
+
+    // ----- Head on a pivot at the top of the neck (turns and nods)
+    const headPivot = new THREE.Group();
+    headPivot.position.set(0, 1.24, 0);
+    avatar.add(headPivot);
+    const head = new THREE.Group();
+    head.position.set(0, 0.44, 0);
+    headPivot.add(head);
+
+    head.add(mesh(shapedSphere(112, 0, Math.PI * 2, 0, Math.PI), M.skin, null, [HS, HS, HS]));
+    [-1, 1].forEach((s) => {
+      head.add(mesh(SPH, M.skin, [s * 0.49, 0, -0.02], [0.06, 0.11, 0.075], [0, s * 0.3, 0]));
+      head.add(mesh(SPH, M.blush, [s * 0.25, -0.09, 0.4], [0.075, 0.045, 0.02]));
+    });
+
+    // nose: small and rounded
+    head.add(mesh(SPH, M.skin, [0, -0.005, 0.45], [0.03, 0.07, 0.03]));
+    head.add(mesh(SPH, M.skin, [0, -0.075, 0.468], [0.052, 0.042, 0.045]));
+    [-1, 1].forEach((s) => head.add(mesh(SPH, M.skin, [s * 0.04, -0.088, 0.448], [0.028, 0.024, 0.026])));
+
+    // big expressive eyes with relaxed upper lids
+    const eyes = [], lids = [];
+    [-1, 1].forEach((s) => {
+      const eye = new THREE.Group();
+      eye.position.set(s * 0.168, 0.035, 0.365);
+      eye.add(mesh(new THREE.SphereGeometry(0.08, 40, 28), M.eyeWhite));
+      eye.add(mesh(new THREE.SphereGeometry(0.0808, 40, 16, 0, Math.PI * 2, 0, 0.66), M.iris, null, null, [Math.PI / 2, 0, 0]));
+      eye.add(mesh(new THREE.SphereGeometry(0.0814, 32, 8, 0, Math.PI * 2, 0, 0.3), M.pupil, null, null, [Math.PI / 2, 0, 0]));
+      eye.add(mesh(new THREE.SphereGeometry(0.011, 12, 8), M.shine, [0.022, 0.026, 0.074]));
+      eye.add(mesh(new THREE.SphereGeometry(0.006, 10, 6), M.shine, [-0.016, -0.02, 0.077]));
+      head.add(eye);
+      eyes.push(eye);
+      const lid = new THREE.Group();
+      lid.position.copy(eye.position);
+      lid.add(mesh(new THREE.SphereGeometry(0.086, 40, 16, 0, Math.PI * 2, 0, 1.05), M.skin));
+      lid.add(mesh(new THREE.TorusGeometry(0.086 * Math.sin(1.05), 0.0065, 8, 48), M.lash, [0, 0.086 * Math.cos(1.05), 0], null, [Math.PI / 2, 0, 0]));
+      head.add(lid);
+      lids.push(lid);
+      // soft, thick eyebrows
+      const brow = [[0.085, 0.18, 0.448], [0.165, 0.2, 0.428], [0.245, 0.176, 0.398]].map(([x, y, z]) => [s * x, y, z]);
+      head.add(tube(brow, 0.021, M.hair));
+      [brow[0], brow[2]].forEach((p) => head.add(mesh(new THREE.SphereGeometry(0.021, 12, 8), M.hair, p)));
+    });
+
+    // friendly smile, curved to follow the face
+    if (LOOK.smile) {
+      const smile = new THREE.Shape();
+      smile.moveTo(-0.1, 0);
+      smile.quadraticCurveTo(0, -0.02, 0.1, 0);
+      smile.quadraticCurveTo(0, -0.13, -0.1, 0);
+      const teeth = new THREE.Shape();
+      teeth.moveTo(-0.078, -0.01);
+      teeth.quadraticCurveTo(0, -0.028, 0.078, -0.01);
+      teeth.lineTo(0.068, -0.03);
+      teeth.quadraticCurveTo(0, -0.05, -0.068, -0.03);
+      teeth.closePath();
+      const lip = new THREE.Shape();
+      lip.moveTo(-0.06, -0.058);
+      lip.quadraticCurveTo(0, -0.1, 0.06, -0.058);
+      lip.quadraticCurveTo(0, -0.08, -0.06, -0.058);
+      head.add(mesh(bend(new THREE.ShapeGeometry(smile, 24), 1.6), M.mouth, [0, -0.2, 0.437], null, [-0.2, 0, 0]));
+      head.add(mesh(bend(new THREE.ShapeGeometry(teeth, 24), 1.6), M.teeth, [0, -0.2, 0.439], null, [-0.2, 0, 0]));
+      head.add(mesh(bend(new THREE.ShapeGeometry(lip, 24), 1.6), M.lip, [0, -0.2, 0.436], null, [-0.2, 0, 0]));
+    } else {
+      head.add(tube([[-0.07, -0.2, 0.43], [0, -0.215, 0.44], [0.07, -0.2, 0.43]], 0.01, M.mouth));
+    }
+
+    // light, neatly trimmed beard: low under the lip, rising along the jaw to the sideburns
+    if (LOOK.beard) {
+      const g = shapedSphere(112, 0, Math.PI, 1.5, Math.PI - 1.5);
+      const p = g.attributes.position, colors = new Float32Array(p.count * 4);
+      for (let i = 0; i < p.count; i++) {
+        const x = Math.abs(p.getX(i)), y = p.getY(i) / 1.08;
+        const top = -0.54 + 0.5 * Math.pow(x, 1.25); // beard top edge follows the jaw
+        const a = smoothstep(top, top - 0.06, y);
+        colors.set([1, 1, 1, 0.66 * a], i * 4);
+      }
+      g.setAttribute('color', new THREE.BufferAttribute(colors, 4));
+      head.add(mesh(g, new THREE.MeshStandardMaterial({ color: LOOK.beardColor, roughness: 0.9, vertexColors: true, transparent: true, depthWrite: false }), null, [HS * 1.02, HS * 1.02, HS * 1.02]));
+      head.add(tube([[-0.09, -0.165, 0.44], [-0.035, -0.15, 0.458], [0, -0.155, 0.462], [0.035, -0.15, 0.458], [0.09, -0.165, 0.44]], 0.016, M.stache));
+    }
+
+    // glossy, sculpted wavy hair with a clean hairline
+    const capGeo = new THREE.SphereGeometry(1, 112, 72);
+    {
+      const p = capGeo.attributes.position, v = new THREE.Vector3();
+      for (let i = 0; i < p.count; i++) {
+        v.fromBufferAttribute(p, i);
+        const flat = Math.hypot(v.x, v.z) || 1;
+        const front = Math.max(0, v.z / flat), back = Math.max(0, -v.z / flat);
+        const limit = 1.45 + 0.5 * back - 0.62 * Math.pow(front, 1.3);
+        let theta = Math.acos(Math.max(-1, Math.min(1, v.y)));
+        if (theta > limit) {
+          theta = limit;
+          const phi = Math.atan2(v.z, v.x);
+          v.set(Math.cos(phi) * Math.sin(theta), Math.cos(theta), Math.sin(phi) * Math.sin(theta));
+        }
+        headDeform(v);
+        const a = Math.atan2(v.z, v.x);
+        v.multiplyScalar(1 + 0.02 * Math.sin(a * 7 + v.y * 4) * Math.max(0, Math.min(1, (v.y + 0.2) * 1.5)));
+        p.setXYZ(i, v.x, v.y, v.z);
+      }
+      capGeo.computeVertexNormals();
+    }
+    head.add(mesh(capGeo, M.hair, [0, 0.012, -0.01], [HS * 1.04, HS * 1.04, HS * 1.04]));
+    const waves = [
+      [0.0, 0.47, 0.05, 0.34, 0.15, 0.36, -0.15, 0, 0],
+      [-0.2, 0.42, 0.22, 0.2, 0.11, 0.16, -0.5, 0, 0.4],
+      [0.04, 0.47, 0.27, 0.21, 0.11, 0.15, -0.6, 0, 0.05],
+      [0.25, 0.41, 0.2, 0.18, 0.1, 0.15, -0.5, 0, -0.45],
+      [-0.36, 0.28, 0.06, 0.13, 0.14, 0.17, -0.2, 0, 0.6],
+      [0.37, 0.27, 0.04, 0.13, 0.14, 0.17, -0.2, 0, -0.6],
+      [0, 0.36, -0.3, 0.32, 0.16, 0.2, 0.3, 0, 0],
+    ];
+    waves.forEach(([x, y, z, sx, sy, sz, rx, ry, rz]) => head.add(mesh(SPH, M.hair, [x, y, z], [sx, sy, sz], [rx, ry, rz])));
+    [-1, 1].forEach((s) => head.add(mesh(SPH, M.hair, [s * 0.475, 0.06, 0.08], [0.035, 0.11, 0.06])));
+
+    // gold round glasses
+    if (LOOK.glasses) {
+      [-1, 1].forEach((s) => {
+        head.add(mesh(new THREE.TorusGeometry(0.092, 0.0095, 14, 64), M.gold, [s * 0.168, 0.035, 0.47], [1.08, 1, 1]));
+        head.add(mesh(new THREE.CircleGeometry(0.09, 48), M.lens, [s * 0.168, 0.035, 0.469], [1.08, 1, 1]));
+        head.add(tube([[s * 0.265, 0.05, 0.452], [s * 0.39, 0.05, 0.33], [s * 0.445, 0.045, 0.12]], 0.0065, M.gold));
+      });
+      head.add(tube([[-0.07, 0.05, 0.476], [0, 0.07, 0.484], [0.07, 0.05, 0.476]], 0.008, M.gold));
+    }
+
+    return { avatar, body, headPivot, eyes, lids };
+  }
+
   function init() {
     let renderer;
     try {
@@ -935,38 +1153,50 @@
     } catch (e) { fail(); return; }
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.0;
+    renderer.toneMappingExposure = 1.08;
 
     const scene = new THREE.Scene();
     const pmrem = new THREE.PMREMGenerator(renderer);
     scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
 
+    // Portrait framing: head and shoulders, like a photo in the arch
     const camera = new THREE.PerspectiveCamera(30, 1, 0.1, 50);
-    // Portrait framing: head and shoulders down to the waist, like a photo in the arch
-    camera.position.set(0, 1.46, 2.4);
-    camera.lookAt(0, 1.33, 0);
+    camera.position.set(0, 1.6, 3.35);
+    camera.lookAt(0, 1.52, 0);
 
-    scene.add(new THREE.HemisphereLight(0xfff3e0, 0x15161a, 0.5));
-    const key = new THREE.DirectionalLight(0xfff0d8, 1.5);
-    key.position.set(1.6, 3, 2.4);
+    scene.add(new THREE.HemisphereLight(0xfff6ea, 0x1a1b20, 0.6));
+    const key = new THREE.DirectionalLight(0xfff2e2, 1.85);
+    key.position.set(1.2, 2.6, 3.0);
     scene.add(key);
-    const rim = new THREE.DirectionalLight(0x9db4d8, 2.6);
-    rim.position.set(-2.2, 2.4, -2.4);
+    const fill = new THREE.DirectionalLight(0xffe9d6, 0.5);
+    fill.position.set(-2, 1.2, 2.5);
+    scene.add(fill);
+    const rim = new THREE.DirectionalLight(0x9db4d8, 2.0);
+    rim.position.set(-2.2, 2.6, -2.4);
     scene.add(rim);
-    const warm = new THREE.PointLight(0xd9b26f, 3, 6, 2);
-    warm.position.set(1.1, 0.9, 1.0);
-    scene.add(warm);
 
     const halo = makeHalo();
-    halo.position.set(0, 1.42, -0.75);
-    halo.scale.setScalar(0.9);
+    halo.position.set(0, 1.7, -0.75);
+    halo.scale.setScalar(0.92);
     scene.add(halo);
     const dust = makeDust();
     scene.add(dust);
 
-    let mixer = null, model = null, head = null, neck = null, agree = null;
-    const pointer = { x: 0, y: 0, tx: 0, ty: 0 };
+    const { avatar, body, headPivot, eyes, lids } = buildAvatar();
+    scene.add(avatar);
+    arch.classList.add('ready');
 
+    // If portfolio/avatar.png exists (for example a rendered 3D avatar with a transparent
+    // background), show it instead of the code-built avatar. The halo, float, tilt and nod stay.
+    let photo = null;
+    const img = new Image();
+    img.className = 'arch-photo';
+    img.alt = '3D avatar of Bhargav Angadi';
+    img.onload = () => { photo = img; arch.appendChild(img); avatar.visible = false; };
+    img.onerror = () => { if (!img.src.endsWith('.png')) img.src = 'avatar.png'; };
+    img.src = 'avatar.webp';
+
+    const pointer = { x: 0, y: 0, tx: 0, ty: 0 };
     const resize = () => {
       const w = arch.clientWidth, h = arch.clientHeight;
       if (!w || !h) return;
@@ -981,76 +1211,55 @@
       if (e.pointerType !== 'mouse') return;
       const r = arch.getBoundingClientRect();
       pointer.tx = Math.max(-1, Math.min(1, (e.clientX - (r.left + r.width / 2)) / (r.width * 1.2)));
-      pointer.ty = Math.max(-1, Math.min(1, -(e.clientY - (r.top + r.height * 0.3)) / (r.height)));
+      pointer.ty = Math.max(-1, Math.min(1, -(e.clientY - (r.top + r.height * 0.3)) / r.height));
     });
     hero.addEventListener('pointerleave', () => { pointer.tx = 0; pointer.ty = 0; });
 
-    // A friendly nod: on load, on "Hire me" hover, and when the arch is clicked
-    let lastNod = 0;
-    const nod = () => {
-      if (!agree || performance.now() - lastNod < 1800) return;
-      lastNod = performance.now();
-      agree.reset().setEffectiveWeight(1).play();
-    };
+    // A friendly nod: on load, when "Hire me" / "Get a free quote" is hovered, and on click
+    const clock = new THREE.Clock();
+    let nodStart = -10, blinkStart = -10, nextBlink = 1.5;
+    const nod = () => { if (clock.elapsedTime - nodStart > 1.6) nodStart = clock.elapsedTime; };
     document.querySelectorAll('[data-nod]').forEach((el) => {
       el.addEventListener('mouseenter', nod);
       el.addEventListener('focus', nod);
     });
     arch.addEventListener('click', nod);
+    setTimeout(nod, 900);
 
-    if (saveData) { fail(); }
-    else {
-      new GLTFLoader().load(MODEL_URL, (gltf) => {
-        model = gltf.scene;
-        const porcelain = new THREE.MeshStandardMaterial({ color: 0xf1eee8, roughness: 0.42, metalness: 0, envMapIntensity: 0.55 });
-        const goldMetal = new THREE.MeshStandardMaterial({ color: 0xc8a465, roughness: 0.3, metalness: 0.9, envMapIntensity: 1.1 });
-        model.traverse((o) => {
-          if (o.isMesh) {
-            o.frustumCulled = false;
-            const isJoint = /joint/i.test(o.name + ' ' + (o.material && o.material.name));
-            o.material = isJoint ? goldMetal : porcelain;
-          }
-          if (o.isBone && /Neck$/.test(o.name)) neck = o;
-          if (o.isBone && /Head$/.test(o.name)) head = o;
-        });
-        scene.add(model);
-
-        mixer = new THREE.AnimationMixer(model);
-        const clips = gltf.animations;
-        const idle = THREE.AnimationClip.findByName(clips, 'idle');
-        if (idle) mixer.clipAction(idle).play();
-        const agreeClip = THREE.AnimationClip.findByName(clips, 'agree');
-        if (agreeClip) {
-          THREE.AnimationUtils.makeClipAdditive(agreeClip);
-          agree = mixer.clipAction(agreeClip);
-          agree.setLoop(THREE.LoopOnce, 1);
-        }
-        arch.classList.add('ready');
-        setTimeout(nod, 900);
-      }, undefined, fail);
-    }
-
-    const clock = new THREE.Clock();
-    let visible = false, raf = 0, t = 0;
+    let visible = false, raf = 0;
     const frame = () => {
       const dt = Math.min(clock.getDelta(), 0.05);
-      t += reduce ? dt * 0.2 : dt;
-      pointer.x += (pointer.tx - pointer.x) * 0.07;
-      pointer.y += (pointer.ty - pointer.y) * 0.07;
+      const now = clock.elapsedTime;
+      const t = reduce ? now * 0.2 : now;
+      pointer.x += (pointer.tx - pointer.x) * 0.08;
+      pointer.y += (pointer.ty - pointer.y) * 0.08;
+
+      const np = (now - nodStart) / 1.1;
+      const nodOffset = np >= 0 && np < 1 ? Math.sin(np * Math.PI * 2) * 0.13 * (1 - np) : 0;
+      headPivot.rotation.set(-pointer.y * 0.16 + Math.max(0, nodOffset), pointer.x * 0.38, -pointer.x * 0.04);
+      body.rotation.y = pointer.x * 0.12;
+      avatar.position.y = Math.sin(t * 1.5) * 0.006; // breathing
+
+      // eyes follow the cursor; lids blink every few seconds
+      if (now > nextBlink) { blinkStart = now; nextBlink = now + 2.5 + Math.random() * 3; }
+      const bp = (now - blinkStart) / 0.18;
+      const close = bp >= 0 && bp < 1 ? Math.sin(bp * Math.PI) : 0;
+      eyes.forEach((e) => e.rotation.set(-pointer.y * 0.25, pointer.x * 0.35, 0));
+      lids.forEach((l) => { l.rotation.x = -0.3 + close * 1.65 - pointer.y * 0.05; });
+      if (photo) {
+        const lift = (Math.sin(t * 1.5) * 4).toFixed(2);
+        const tiltX = (-pointer.y * 6 + Math.max(0, nodOffset) * 40).toFixed(2);
+        photo.style.transform = `translateX(-50%) translateY(${lift}px) perspective(900px) rotateY(${(pointer.x * 10).toFixed(2)}deg) rotateX(${tiltX}deg)`;
+      }
 
       halo.rotation.z = -t * 0.12;
       const p = dust.geometry.attributes.position;
       for (let i = 0; i < p.count; i++) {
         let y = p.getY(i) + dt * (reduce ? 0.01 : 0.05);
-        if (y > 2.2) y = 0.3;
+        if (y > 2.5) y = 0.6;
         p.setY(i, y);
       }
       p.needsUpdate = true;
-
-      if (mixer) mixer.update(reduce ? dt * 0.5 : dt);
-      if (model) model.rotation.y = pointer.x * 0.45;
-      if (neck) neck.rotation.y += pointer.x * 0.15;
-      if (head) { head.rotation.y += pointer.x * 0.3; head.rotation.x -= pointer.y * 0.2; }
 
       renderer.render(scene, camera);
       raf = visible ? requestAnimationFrame(frame) : 0;

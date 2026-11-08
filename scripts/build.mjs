@@ -8,7 +8,7 @@
  * To change anything (projects, links, wording), edit CONFIG below and re-run.
  * Don't edit README.md or assets/*.svg by hand; they are overwritten on every build.
  */
-import { copyFileSync, existsSync, mkdirSync, writeFileSync } from 'node:fs';
+import { copyFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -187,24 +187,117 @@ const ICONS = {
   wrench: '<path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L4 17l3 3 5.3-5.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.4-.6-.6-2.4 2.5-2.5z"/>',
 };
 
-// ------------------------------------------------------------------ Shared art: the white & gold figure in an arch
+// ------------------------------------------------------------------ Shared art: Bhargav's avatar in an arch
+// A flat, illustrated version of the Memoji-style 3D avatar on the website.
+const AV = {
+  skinHi: '#f8dcc6', skin: '#f0c3a0', skinLo: '#d6a07c', blush: '#f09a86',
+  hair: '#1c1410', hairHi: '#4a3c33', beard: '#2a1f19',
+  tee: '#f6f4f0', teeRib: '#e7e3dc', jacketHi: '#373b44', jacketLo: '#1d2025', jacketRib: '#3a3e46',
+};
+
 function figureDefs() {
   return `
-<radialGradient id="porc" cx=".38" cy=".3" r=".85"><stop offset="0" stop-color="#ffffff"/><stop offset=".55" stop-color="#ece8e1"/><stop offset="1" stop-color="#b3ada2"/></radialGradient>
-<radialGradient id="goldg" cx=".35" cy=".3" r=".85"><stop offset="0" stop-color="#fff1c9"/><stop offset=".35" stop-color="${P.gold2}"/><stop offset=".8" stop-color="#a6844a"/><stop offset="1" stop-color="#5e4723"/></radialGradient>
+<radialGradient id="skin" cx=".42" cy=".34" r=".78"><stop offset="0" stop-color="${AV.skinHi}"/><stop offset=".62" stop-color="${AV.skin}"/><stop offset="1" stop-color="${AV.skinLo}"/></radialGradient>
+<linearGradient id="jacket" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${AV.jacketHi}"/><stop offset="1" stop-color="${AV.jacketLo}"/></linearGradient>
+<linearGradient id="neckShade" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${AV.skinLo}"/><stop offset=".55" stop-color="${AV.skin}"/></linearGradient>
+<radialGradient id="hairGloss" cx=".45" cy=".2" r=".7"><stop offset="0" stop-color="${AV.hairHi}"/><stop offset=".55" stop-color="${AV.hair}"/></radialGradient>
 <radialGradient id="archBg" cx="930" cy="200" r="260" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2a2419"/><stop offset=".55" stop-color="#141416"/><stop offset="1" stop-color="#0c0d0f"/></radialGradient>
 <radialGradient id="glow" cx="930" cy="250" r="300" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="${P.gold}" stop-opacity=".16"/><stop offset="1" stop-color="${P.gold}" stop-opacity="0"/></radialGradient>
 <clipPath id="archClip"><path d="M822 450 Q800 450 800 428 V176 A130 130 0 0 1 1060 176 V428 Q1060 450 1038 450 Z"/></clipPath>`;
 }
 
+// Memoji-style avatar: big round head, expressive eyes that blink, glossy wavy hair,
+// trimmed beard, gold glasses, white tee under a charcoal bomber jacket.
+function avatarArt() {
+  const G = P.gold;
+  const glance = `<animateTransform attributeName="transform" type="translate" values="0 0;0 0;3 1;3 1;0 0;0 0;-3 1;-3 1;0 0" keyTimes="0;.18;.24;.36;.42;.6;.66;.78;1" dur="9s" repeatCount="indefinite"/>`;
+  const eye = (cx) => {
+    const a = cx - 15, b = cx + 15;
+    const lidOpen = `M${a} 189 Q${cx} 174 ${b} 189 L${b} 172 L${a} 172 Z`, lidShut = `M${a} 189 Q${cx} 206 ${b} 189 L${b} 172 L${a} 172 Z`;
+    const lashOpen = `M${a} 189 Q${cx} 174 ${b} 189`, lashShut = `M${a} 189 Q${cx} 206 ${b} 189`;
+    const blink = (o, s) => `<animate attributeName="d" values="${o};${o};${s};${o}" keyTimes="0;.94;.97;1" dur="5s" repeatCount="indefinite"/>`;
+    return `
+      <ellipse cx="${cx}" cy="193" rx="14.5" ry="13.5" fill="#fbfaf8"/>
+      <g>${glance}<circle cx="${cx + 1}" cy="194" r="9" fill="#5b3a22"/><circle cx="${cx + 1}" cy="194" r="4.6" fill="#0b0807"/><circle cx="${cx + 4}" cy="190" r="2.6" fill="#fff"/><circle cx="${cx - 2}" cy="198" r="1.2" fill="#fff"/></g>
+      <path d="${lidOpen}" fill="${AV.skin}">${blink(lidOpen, lidShut)}</path>
+      <path d="${lashOpen}" fill="none" stroke="#15100c" stroke-width="2.8" stroke-linecap="round">${blink(lashOpen, lashShut)}</path>`;
+  };
+  return `
+  <g>
+    <animateTransform attributeName="transform" type="translate" values="0 0;0 -2.5;0 0" dur="5s" repeatCount="indefinite"/>
+    <!-- white tee under an open charcoal bomber jacket -->
+    <path d="M884 330 L896 460 L964 460 L976 330 Q930 346 884 330 Z" fill="${AV.tee}"/>
+    <rect x="910" y="268" width="40" height="52" rx="15" fill="url(#neckShade)"/>
+    <path d="M904 322 Q930 338 956 322" fill="none" stroke="${AV.teeRib}" stroke-width="5" stroke-linecap="round"/>
+    <path d="M818 460 L818 392 Q822 344 868 328 Q886 321 904 320 L914 332 L900 460 Z" fill="url(#jacket)"/>
+    <path d="M1042 460 L1042 392 Q1038 344 992 328 Q974 321 956 320 L946 332 L960 460 Z" fill="url(#jacket)"/>
+    <path d="M880 330 Q930 302 980 330" fill="none" stroke="${AV.jacketRib}" stroke-width="13" stroke-linecap="round"/>
+    <g stroke="${G}" stroke-width="2" stroke-linecap="round"><path d="M914 333 L900 460"/><path d="M946 333 L960 460"/></g>
+    <circle cx="1000" cy="372" r="6" fill="none" stroke="${G}" stroke-width="2"/>
+    <!-- head: nods now and then -->
+    <g>
+      <animateTransform attributeName="transform" type="rotate" values="0 930 280;0 930 280;5 930 280;-2 930 280;0 930 280" keyTimes="0;.62;.72;.84;1" dur="7s" repeatCount="indefinite"/>
+      <ellipse cx="854" cy="196" rx="10" ry="18" fill="${AV.skin}"/><ellipse cx="1006" cy="196" rx="10" ry="18" fill="${AV.skin}"/>
+      <path d="M856 190 Q856 112 930 110 Q1004 112 1004 190 Q1004 246 984 268 Q962 292 930 292 Q898 292 876 268 Q856 246 856 190 Z" fill="url(#skin)"/>
+      <ellipse cx="882" cy="222" rx="14" ry="8" fill="${AV.blush}" opacity=".22"/><ellipse cx="978" cy="222" rx="14" ry="8" fill="${AV.blush}" opacity=".22"/>
+      <!-- trimmed beard following the jaw, and moustache -->
+      <path d="M858 200 Q860 248 878 270 Q902 297 930 297 Q958 297 982 270 Q1000 248 1002 200 Q998 232 988 246 Q974 262 958 258 Q946 271 930 271 Q914 271 902 258 Q886 262 872 246 Q862 232 858 200 Z" fill="${AV.beard}" opacity=".72"/>
+      <path d="M909 236 Q920 227 930 232 Q940 227 951 236 Q940 242 930 239 Q920 242 909 236 Z" fill="${AV.beard}" opacity=".92"/>
+      <!-- friendly smile -->
+      <path d="M908 244 Q930 268 952 244 Q930 252 908 244 Z" fill="#5a2320"/>
+      <path d="M913 246.5 Q930 254 947 246.5 L944.5 251 Q930 257 915.5 251 Z" fill="#fbf8f2"/>
+      <path d="M917 260 Q930 266 943 260 Q930 263 917 260 Z" fill="#d98d7f"/>
+      <!-- small rounded nose -->
+      <ellipse cx="930" cy="219" rx="10" ry="8" fill="${AV.skinLo}" opacity=".45"/>
+      <ellipse cx="928" cy="216" rx="4" ry="3" fill="#fff" opacity=".35"/>
+      ${eye(902)}${eye(958)}
+      <!-- soft, thick eyebrows -->
+      <path d="M884 166 Q900 157 916 162" fill="none" stroke="${AV.hair}" stroke-width="7" stroke-linecap="round"/>
+      <path d="M944 162 Q960 157 976 166" fill="none" stroke="${AV.hair}" stroke-width="7" stroke-linecap="round"/>
+      <!-- gold round glasses -->
+      <g fill="none" stroke="${G}" stroke-width="2.6">
+        <ellipse cx="902" cy="193" rx="21" ry="19.5" fill="#ffffff" fill-opacity=".06"/><ellipse cx="958" cy="193" rx="21" ry="19.5" fill="#ffffff" fill-opacity=".06"/>
+        <path d="M923 190 Q930 184 937 190"/><path d="M881 190 L857 186"/><path d="M979 190 L1003 186"/>
+      </g>
+      <!-- glossy, sculpted wavy hair -->
+      <g fill="url(#hairGloss)">
+        <path d="M852 204 Q846 140 870 114 Q898 86 930 88 Q966 86 992 112 Q1014 140 1008 204 Q1000 172 992 160 Q980 140 964 140 Q950 150 932 142 Q914 152 898 142 Q880 144 868 160 Q858 176 852 204 Z"/>
+        <ellipse cx="888" cy="112" rx="30" ry="22" transform="rotate(-20 888 112)"/>
+        <ellipse cx="930" cy="96" rx="36" ry="22"/>
+        <ellipse cx="972" cy="110" rx="30" ry="22" transform="rotate(20 972 110)"/>
+        <ellipse cx="912" cy="128" rx="28" ry="14" transform="rotate(-10 912 128)"/>
+        <ellipse cx="950" cy="126" rx="26" ry="13" transform="rotate(8 950 126)"/>
+        <rect x="851" y="168" width="10" height="34" rx="5"/><rect x="999" y="168" width="10" height="34" rx="5"/>
+      </g>
+      <g fill="none" stroke="${AV.hairHi}" stroke-width="2.4" stroke-linecap="round" opacity=".8">
+        <path d="M872 112 Q884 100 900 104"/><path d="M910 90 Q926 82 944 86"/><path d="M958 98 Q972 96 984 106"/><path d="M900 128 Q912 122 926 126"/>
+      </g>
+    </g>
+  </g>`;
+}
+
+// Your real avatar image (small WebP with a transparent background), embedded in the hero
+// card so it shows on GitHub. If the file is missing, the drawn avatar is used instead.
+const AVATAR_PHOTO = join(ROOT, 'assets', 'avatar-photo.webp');
+function avatarPhoto() {
+  if (!existsSync(AVATAR_PHOTO)) return null;
+  const b64 = readFileSync(AVATAR_PHOTO).toString('base64');
+  return `
+  <g>
+    <animateTransform attributeName="transform" type="translate" values="0 0;0 -3;0 0" dur="5s" repeatCount="indefinite"/>
+    <image href="data:image/webp;base64,${b64}" x="784" y="160" width="292" height="292" preserveAspectRatio="xMidYMax meet"/>
+  </g>`;
+}
+
 function figureArt() {
-  const cx = 930, cy = 214;
+  const photo = avatarPhoto();
+  const cx = 930, cy = photo ? 262 : 200;
   const r = rng(11);
   let halo = '';
   for (let i = 0; i < 460; i++) {
-    const rr = 68 + Math.pow(r(), 0.8) * 72;
+    const rr = 74 + Math.pow(r(), 0.8) * 70;
     const a = ((i % 3) / 3) * Math.PI * 2 + rr / 40 + (r() - 0.5) * 0.5;
-    const k = (rr - 68) / 72;
+    const k = (rr - 74) / 70;
     halo += `<circle cx="${(cx + Math.cos(a) * rr).toFixed(1)}" cy="${(cy + Math.sin(a) * rr).toFixed(1)}" r="${(0.6 + r() * 1.3).toFixed(2)}" fill="${mix(P.gold2, '#5d6f86', k)}" opacity="${(0.4 + r() * 0.6).toFixed(2)}"/>`;
   }
   let dust = '';
@@ -212,9 +305,6 @@ function figureArt() {
     const x = 806 + r() * 248, y = 60 + r() * 380, d = (4 + r() * 6).toFixed(1);
     dust += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${(0.5 + r() * 0.9).toFixed(2)}" fill="${P.gold2}" opacity=".5"><animate attributeName="cy" values="${y.toFixed(1)};${(y - 40).toFixed(1)}" dur="${d}s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;.6;0" dur="${d}s" repeatCount="indefinite"/></circle>`;
   }
-  // Elbows sit at the bottom of the (rotated) upper arms
-  const eL = [855 - 92 * Math.sin(Math.PI / 20), 262 + 92 * Math.cos(Math.PI / 20)];
-  const eR = [1005 + 92 * Math.sin(Math.PI / 20), eL[1]];
   return `
 <circle cx="930" cy="250" r="300" fill="url(#glow)"/>
 <g fill="none">
@@ -227,30 +317,7 @@ function figureArt() {
   <rect x="800" y="40" width="260" height="420" fill="url(#archBg)"/>
   <g><animateTransform attributeName="transform" type="rotate" from="0 ${cx} ${cy}" to="-360 ${cx} ${cy}" dur="120s" repeatCount="indefinite"/>${halo}</g>
   ${dust}
-  <g>
-    <animateTransform attributeName="transform" type="translate" values="0 0;0 -3;0 0" dur="5s" repeatCount="indefinite"/>
-    <g fill="url(#porc)">
-      <rect x="842" y="262" width="26" height="92" rx="13" transform="rotate(9 855 262)"/>
-      <rect x="992" y="262" width="26" height="92" rx="13" transform="rotate(-9 1005 262)"/>
-      <rect x="${(eL[0] - 12).toFixed(1)}" y="${eL[1].toFixed(1)}" width="24" height="96" rx="12" transform="rotate(3 ${eL[0].toFixed(1)} ${eL[1].toFixed(1)})"/>
-      <rect x="${(eR[0] - 12).toFixed(1)}" y="${eR[1].toFixed(1)}" width="24" height="96" rx="12" transform="rotate(-3 ${eR[0].toFixed(1)} ${eR[1].toFixed(1)})"/>
-      <path d="M890 410 Q930 398 970 410 L964 456 L896 456 Z"/>
-    </g>
-    <circle cx="${eL[0].toFixed(1)}" cy="${eL[1].toFixed(1)}" r="11" fill="url(#goldg)"/>
-    <circle cx="${eR[0].toFixed(1)}" cy="${eR[1].toFixed(1)}" r="11" fill="url(#goldg)"/>
-    <circle cx="930" cy="382" r="30" fill="url(#goldg)"/>
-    <ellipse cx="919" cy="371" rx="9" ry="6" fill="#fff" opacity=".35"/>
-    <path d="M874 258 Q874 236 902 232 L958 232 Q986 236 986 258 L976 334 Q972 354 950 356 L910 356 Q888 354 884 334 Z" fill="url(#porc)"/>
-    <circle cx="866" cy="254" r="14" fill="url(#goldg)"/>
-    <circle cx="994" cy="254" r="14" fill="url(#goldg)"/>
-    <rect x="918" y="210" width="24" height="26" rx="9" fill="url(#goldg)"/>
-    <g>
-      <animateTransform attributeName="transform" type="rotate" values="0 930 214;0 930 214;7 930 214;-3 930 214;0 930 214" keyTimes="0;.62;.72;.84;1" dur="7s" repeatCount="indefinite"/>
-      <ellipse cx="930" cy="172" rx="37" ry="45" fill="url(#porc)"/>
-      <ellipse cx="930" cy="188" rx="30" ry="24" fill="#000" opacity=".045"/>
-      <ellipse cx="917" cy="150" rx="10" ry="14" fill="#fff" opacity=".4"/>
-    </g>
-  </g>
+  ${photo || avatarArt()}
 </g>
 <path d="M822 450 Q800 450 800 428 V176 A130 130 0 0 1 1060 176 V428 Q1060 450 1038 450 Z" fill="none" stroke="${P.gold}" stroke-opacity=".45"/>`;
 }
@@ -666,7 +733,12 @@ writeFileSync(join(ROOT, 'preview.html'), preview(md));
 // Publish the portfolio page to site/ for GitHub Pages
 mkdirSync(join(ROOT, 'site'), { recursive: true });
 writeFileSync(join(ROOT, 'site', '.nojekyll'), '');
-if (existsSync(CONFIG.portfolioSource)) copyFileSync(CONFIG.portfolioSource, join(ROOT, 'site', 'index.html'));
-else console.warn(`! Portfolio not found at ${CONFIG.portfolioSource}; site/ left as is.`);
+if (existsSync(CONFIG.portfolioSource)) {
+  copyFileSync(CONFIG.portfolioSource, join(ROOT, 'site', 'index.html'));
+  for (const f of ['avatar.webp', 'avatar.png']) { // the hero avatar image, if you have one
+    const src = join(dirname(CONFIG.portfolioSource), f);
+    if (existsSync(src)) copyFileSync(src, join(ROOT, 'site', f));
+  }
+} else console.warn(`! Portfolio not found at ${CONFIG.portfolioSource}; site/ left as is.`);
 
 console.log(`Built README.md, preview.html, site/ and ${Object.keys(files).length} SVG cards.`);
