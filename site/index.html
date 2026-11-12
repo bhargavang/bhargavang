@@ -4,1274 +4,351 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!--
-  =====================================================================
-  PORTFOLIO v2 (editorial + 3D figure). Search for "EDIT" to find:
-   1. (done) GitHub + LinkedIn links
-   2. Project "Live demo" / "Code" links once each demo project ships
-   3. Your experience, education, certificates and achievements:
-      fill the JSON in <script id="profile-data"> near the bottom.
-      The "Path" section stays hidden until it has data.
-  Previous version saved as index-v1-galaxy.html.
-  3D avatar: built in code with three.js (no model file). Restyle him in LOOK, near the bottom.
-  =====================================================================
+  PORTFOLIO v3 (simple). All text is right here in the HTML; the page has no build step.
+  - Project images are in img/ at 16:10 (1600x1000 WebP plus an 800px copy).
+  - When a project gets a live demo, add a "Live site" link to its card.
+  - Publish: cd ../profile-repo && node scripts/build.mjs, then commit and push.
+  Earlier versions: index-v2-editorial.html (3D avatar, services, toolkit, FAQ) and index-v1-galaxy.html.
 -->
-<title>Bhargav Angadi | Software Developer</title>
-<meta name="description" content="Bhargav Angadi is a software developer in India building Java Spring Boot backends, React web apps and APIs. Open to full-time roles and freelance projects.">
-<meta property="og:title" content="Bhargav Angadi | Software Developer">
-<meta property="og:description" content="Java backends, web apps and APIs, built to ship and keep working.">
+<title>Bhargav Angadi | Websites, booking systems and web apps</title>
+<meta name="description" content="Bhargav Angadi is a software developer in India. He builds websites, booking systems and web apps for restaurants and small businesses on Java, Spring Boot and React. Open to freelance projects and full-time roles.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; base-uri 'none'; form-action 'none'">
+<link rel="canonical" href="https://bhargavang.github.io/bhargavang/">
 <meta property="og:type" content="website">
-<meta name="theme-color" content="#0b0c0e">
+<meta property="og:url" content="https://bhargavang.github.io/bhargavang/">
+<meta property="og:title" content="Bhargav Angadi | Software developer">
+<meta property="og:description" content="Websites, booking systems and web apps for restaurants and small businesses.">
+<meta property="og:image" content="https://bhargavang.github.io/bhargavang/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#f7f5f0">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0f0f10">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='32' fill='%230b0c0e'/><circle cx='32' cy='32' r='29' fill='none' stroke='%23c8a465' stroke-width='2'/><text x='50%25' y='56%25' text-anchor='middle' dominant-baseline='middle' font-family='Georgia,serif' font-style='italic' font-size='28' fill='%23e3c78f'>BA</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Bhargav Angadi",
+  "jobTitle": "Software developer",
+  "url": "https://bhargavang.github.io/bhargavang/",
+  "email": "mailto:bhargav.angadi@gmail.com",
+  "address": { "@type": "PostalAddress", "addressCountry": "IN" },
+  "knowsAbout": ["Java", "Spring Boot", "React", "Next.js", "Shopify", "PostgreSQL"],
+  "sameAs": ["https://github.com/bhargavang", "https://www.linkedin.com/in/bhargavangadi/"]
+}
+</script>
 <style>
   :root {
-    --bg: #0b0c0e;
-    --bg-2: #0f1013;
-    --surface: #141619;
-    --surface-2: #1a1c21;
-    --line: #22252b;
-    --line-2: #2f333b;
-    --text: #ece8e1;
-    --muted: #a4a29c;
-    --dim: #6f6f72;
-    --gold: #c8a465;
-    --gold-2: #e3c78f;
-    --gold-soft: rgba(200, 164, 101, .12);
-    --steel: #8a9bb0;
-    --ok: #5fd38d;
-    --serif: "Instrument Serif", "Iowan Old Style", Georgia, serif;
-    --sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
-    --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
-    color-scheme: dark;
+    --bg: #f7f5f0;
+    --surface: #efebe3;
+    --ink: #181715;
+    --muted: #5d5851;
+    --faint: #7a756d;
+    --line: #dfdad0;
+    --accent: #8a6420;
+    --btn-bg: #181715;
+    --btn-ink: #f7f5f0;
+    --band-bg: #181715;
+    --band-ink: #f3efe7;
+    --band-muted: #b0aaa0;
+    --band-accent: #d9b874;
+    --band-line: #3a3731;
+    --ok: #2f9e5b;
+    --serif: "Instrument Serif", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+    --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --gutter: clamp(16px, 4vw, 40px);
+    --ease: cubic-bezier(.2, .7, .2, 1);
   }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0f0f10;
+      --surface: #19191a;
+      --ink: #ede9e2;
+      --muted: #a7a29a;
+      --faint: #85807a;
+      --line: #29292b;
+      --accent: #d6b475;
+      --btn-bg: #ede9e2;
+      --btn-ink: #121212;
+      --band-bg: #1c1a15;
+      --band-ink: #ede9e2;
+      --band-muted: #aaa49a;
+      --band-accent: #d9b874;
+      --band-line: #36322a;
+      --ok: #4cc77d;
+    }
+  }
+
   *, *::before, *::after { box-sizing: border-box; }
-  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
   body {
-    margin: 0; background: var(--bg); color: var(--text);
-    font: 16px/1.65 var(--sans); -webkit-font-smoothing: antialiased; overflow-x: hidden;
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font: 400 17px/1.6 var(--sans);
+    -webkit-font-smoothing: antialiased;
+    overflow-wrap: break-word;
   }
-  body::before {
-    content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
-    background-image: linear-gradient(rgba(255, 255, 255, .025) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, .025) 1px, transparent 1px);
-    background-size: 72px 72px;
-    -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 0%, transparent 75%);
-    mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 0%, transparent 75%);
-  }
+  img { max-width: 100%; height: auto; display: block; }
   a { color: inherit; }
-  svg, canvas { display: block; }
-  ::selection { background: var(--gold); color: #15120c; }
-  :focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; border-radius: 4px; }
-  .skip { position: absolute; left: -9999px; top: 12px; z-index: 200; background: var(--gold); color: #15120c; padding: 8px 14px; border-radius: 8px; }
-  .skip:focus { left: 12px; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+  .wrap { max-width: 1120px; margin-inline: auto; padding-inline: var(--gutter); }
+  .skip { position: absolute; left: 16px; top: -48px; padding: 8px 14px; background: var(--btn-bg); color: var(--btn-ink); border-radius: 8px; z-index: 10; }
+  .skip:focus { top: 12px; }
 
-  .wrap { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 32px; }
-  h1, h2, h3 { font-family: var(--serif); font-weight: 400; letter-spacing: -0.01em; line-height: 1.02; margin: 0; }
-  h1 em, h2 em, h3 em, .lead em, .big em { font-style: italic; color: var(--gold-2); }
-  .label { font: 500 11.5px/1.2 var(--mono); letter-spacing: .18em; text-transform: uppercase; color: var(--dim); }
-  .dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--ok); box-shadow: 0 0 0 4px rgba(95, 211, 141, .14); flex: none; }
+  /* Header */
+  .top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 24px; }
+  .brand { font-weight: 600; font-size: 16px; letter-spacing: -.01em; text-decoration: none; }
+  .top nav { display: flex; gap: clamp(20px, 3vw, 36px); }
+  .top nav a { color: var(--muted); text-decoration: none; font-size: 15px; transition: color .2s; }
+  .top nav a:hover { color: var(--ink); }
 
+  /* Hero */
+  .hero { text-align: center; padding-block: clamp(48px, 10vh, 120px) clamp(80px, 13vh, 150px); }
+  .avatar { width: 88px; height: 88px; margin: 0 auto 28px; border-radius: 50%; background: var(--surface); box-shadow: 0 0 0 1px var(--line); object-fit: cover; object-position: 50% 15%; }
+  .eyebrow { margin: 0 0 22px; font-size: 13px; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+  h1, h2, h3 { font-weight: 400; margin: 0; }
+  h1 {
+    font-family: var(--serif);
+    font-size: clamp(46px, 8.6vw, 108px);
+    line-height: .98;
+    letter-spacing: -.025em;
+    text-wrap: balance;
+  }
+  h1 em, h2 em { font-style: italic; color: var(--accent); }
+  .lead { margin: 28px auto 0; max-width: 34em; font-size: clamp(18px, 1.9vw, 20px); line-height: 1.55; color: var(--muted); text-wrap: pretty; }
+  .cta { margin-top: 40px; }
   .btn {
-    display: inline-flex; align-items: center; gap: 10px; padding: 13px 22px; border-radius: 999px;
-    font: 600 14.5px/1 var(--sans); text-decoration: none; border: 1px solid transparent; cursor: pointer;
-    transition: transform .2s, background-color .2s, border-color .2s, color .2s;
+    display: inline-flex; align-items: center; gap: 10px;
+    min-height: 52px; padding: 0 28px; border-radius: 999px;
+    background: var(--btn-bg); color: var(--btn-ink);
+    font: 500 16px/1 var(--sans); text-decoration: none; border: 0; cursor: pointer;
+    transition: transform .35s var(--ease), box-shadow .35s var(--ease);
   }
-  .btn:hover { transform: translateY(-1px); }
-  .btn-gold { background: linear-gradient(180deg, var(--gold-2), var(--gold)); color: #17130b; box-shadow: 0 10px 30px -12px rgba(200, 164, 101, .6); }
-  .btn-line { border-color: var(--line-2); color: var(--text); background: rgba(255, 255, 255, .02); }
-  .btn-line:hover { border-color: var(--gold); color: var(--gold-2); }
+  .btn:hover { transform: translateY(-2px); box-shadow: 0 10px 24px -12px rgba(0, 0, 0, .45); }
+  .btn svg { width: 16px; height: 16px; flex: none; }
+  .note { margin: 20px 0 0; font-size: 14px; color: var(--faint); }
+  .dot { display: inline-block; width: 7px; height: 7px; margin-right: 8px; border-radius: 50%; background: var(--ok); vertical-align: 1px; box-shadow: 0 0 0 3px color-mix(in srgb, var(--ok) 20%, transparent); }
+  @media (min-width: 720px) { .br-wide { display: block; } }
+  @media (max-width: 599px) { .note .sep { display: none; } .note .then { display: block; margin-top: 4px; } }
 
-  /* ---------- Nav ---------- */
-  .nav { position: sticky; top: 0; z-index: 50; background: rgba(11, 12, 14, .72); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); border-bottom: 1px solid transparent; transition: border-color .25s; }
-  .nav.scrolled { border-bottom-color: var(--line); }
-  .nav-inner { height: 72px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
-  .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
-  .mono-mark { width: 38px; height: 38px; border-radius: 50%; border: 1px solid var(--gold); display: grid; place-items: center; font: italic 17px/1 var(--serif); color: var(--gold-2); }
-  .brand-name { font-weight: 600; font-size: 15px; letter-spacing: .01em; }
-  .nav-links { display: flex; gap: 30px; }
-  .nav-links a { text-decoration: none; font-size: 14px; color: var(--muted); transition: color .2s; }
-  .nav-links a:hover { color: var(--text); }
-  .nav .btn { padding: 10px 18px; font-size: 13.5px; }
-
-  /* ---------- Hero ---------- */
-  .hero { position: relative; overflow: hidden; padding: 56px 0 96px; min-height: calc(100svh - 72px); display: flex; align-items: center; }
-  .hero::before {
-    content: ""; position: absolute; right: -10%; top: 5%; width: 70%; height: 90%; z-index: -1; pointer-events: none;
-    background: radial-gradient(closest-side, rgba(200, 164, 101, .14), transparent 70%);
-  }
-  .hero-grid { display: grid; grid-template-columns: 1.08fr .92fr; gap: 48px; align-items: center; }
-  .pill { display: inline-flex; align-items: center; gap: 10px; margin: 0 0 26px; padding: 7px 16px 7px 13px; border-radius: 999px; border: 1px solid var(--line-2); background: rgba(255, 255, 255, .02); font-size: 13px; color: var(--muted); }
-  .kicker { display: flex; align-items: center; gap: 14px; margin: 0 0 18px; }
-  .kicker::before { content: ""; width: 44px; height: 1px; background: linear-gradient(90deg, transparent, var(--gold)); }
-  .hero h1 { font-size: clamp(68px, 10.5vw, 148px); line-height: .9; letter-spacing: -0.025em; }
-  .lead { font-size: clamp(17px, 1.6vw, 19px); color: var(--muted); max-width: 540px; margin: 28px 0 34px; }
-  .lead em { font-family: var(--serif); font-size: 1.18em; }
-  .ctas { display: flex; flex-wrap: wrap; gap: 12px; }
-  .social { list-style: none; padding: 0; margin: 30px 0 0; display: flex; flex-wrap: wrap; gap: 8px 24px; font-size: 13.5px; }
-  .social a { color: var(--muted); text-decoration: none; display: inline-flex; align-items: center; gap: 8px; }
-  .social a:hover { color: var(--gold-2); }
-  .social svg { width: 15px; height: 15px; }
-
-  .hero-visual { position: relative; display: grid; justify-items: center; padding: 24px 0 8px; }
-  .orbit { position: absolute; width: 140%; max-width: 640px; aspect-ratio: 1; left: 50%; top: 46%; transform: translate(-50%, -50%); pointer-events: none; }
-  .orbit .spin { transform-origin: 300px 300px; animation: spin 80s linear infinite; }
-  @keyframes spin { to { transform: rotate(360deg); } }
-  .arch {
-    position: relative; width: min(400px, 100%); aspect-ratio: 4 / 5.15; overflow: hidden; cursor: pointer;
-    border-radius: 999px 999px 28px 28px; border: 1px solid rgba(200, 164, 101, .38);
-    background: radial-gradient(85% 60% at 50% 34%, #2a2419 0%, #141416 58%, #0c0d0f 100%);
-    box-shadow: 0 40px 120px -40px rgba(200, 164, 101, .38), inset 0 0 0 6px rgba(11, 12, 14, .6), inset 0 0 0 7px rgba(200, 164, 101, .14);
-  }
-  .arch canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
-  .arch-photo {
-    position: absolute; left: 50%; bottom: 0; width: 112%; max-width: none; height: auto; transform: translateX(-50%);
-    transform-origin: 50% 100%; pointer-events: none; will-change: transform;
-    filter: drop-shadow(0 30px 40px rgba(0, 0, 0, .55));
-  }
-  .arch-fallback { position: absolute; inset: 0; display: none; place-items: center; font: italic 132px/1 var(--serif); color: var(--gold-2); }
-  .arch.failed .arch-fallback { display: grid; }
-  .arch-loading { position: absolute; left: 0; right: 0; bottom: 22px; margin: 0; text-align: center; transition: opacity .4s; }
-  .arch.ready .arch-loading, .arch.failed .arch-loading { opacity: 0; }
-  .tag {
-    position: absolute; padding: 10px 14px; border-radius: 12px; border: 1px solid var(--line-2);
-    background: rgba(20, 22, 25, .82); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
-    box-shadow: 0 20px 40px -20px rgba(0, 0, 0, .8);
-  }
-  .tag strong { display: flex; align-items: center; gap: 8px; margin-top: 4px; font-size: 13.5px; font-weight: 600; }
-  .tag-a { top: 16%; left: max(-4%, calc(50% - 250px)); }
-  .tag-b { bottom: 17%; right: max(-4%, calc(50% - 250px)); }
-  .fig { width: min(400px, 100%); display: flex; justify-content: space-between; gap: 12px; margin-top: 16px; }
-  .scroll-cue { position: absolute; left: 50%; bottom: 22px; transform: translateX(-50%); text-decoration: none; display: grid; justify-items: center; gap: 10px; }
-  .scroll-cue::after { content: ""; width: 1px; height: 34px; background: linear-gradient(var(--gold), transparent); animation: cue 2.2s ease-in-out infinite; }
-  @keyframes cue { 0%, 100% { opacity: .3; transform: scaleY(.6); transform-origin: top; } 50% { opacity: 1; transform: scaleY(1); transform-origin: top; } }
-
-  /* ---------- Ticker ---------- */
-  .ticker { border-block: 1px solid var(--line); overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
-  .ticker-track { display: flex; width: max-content; animation: marquee 48s linear infinite; }
-  .ticker:hover .ticker-track { animation-play-state: paused; }
-  .ticker ul { display: flex; align-items: baseline; gap: 56px; list-style: none; margin: 0; padding: 22px 28px; }
-  .ticker li { display: flex; align-items: baseline; gap: 12px; white-space: nowrap; }
-  .ticker li::before { content: "◆"; font-size: 8px; color: var(--gold); transform: translateY(-6px); margin-right: 18px; }
-  .ticker b { font: 400 34px/1 var(--serif); }
-  .ticker span { font-size: 13px; color: var(--muted); }
-  @keyframes marquee { to { transform: translateX(-50%); } }
-
-  /* ---------- Sections ---------- */
-  main { counter-reset: sec; }
-  .sec { counter-increment: sec; padding: 128px 0 0; scroll-margin-top: 72px; }
-  .sec-head { display: grid; gap: 22px; margin-bottom: 56px; max-width: 860px; }
-  .sec-label { display: flex; align-items: center; gap: 14px; margin: 0; }
-  .sec-label .num::before { content: counter(sec, decimal-leading-zero); color: var(--gold); }
-  .sec-label::after { content: ""; width: 56px; height: 1px; background: var(--line-2); }
-  .sec-head h2 { font-size: clamp(44px, 6vw, 80px); }
-  .sec-head p { margin: 0; color: var(--muted); font-size: 17px; max-width: 620px; }
-
-  /* About */
-  .about-grid { display: grid; grid-template-columns: 1.1fr .9fr; gap: 72px; }
-  .about-copy .big { font: 400 clamp(24px, 2.4vw, 30px)/1.3 var(--serif); margin: 0 0 24px; }
-  .about-copy p { color: var(--muted); margin: 0 0 18px; }
-  .principles { list-style: none; margin: 0; padding: 0; }
-  .principles li { display: grid; grid-template-columns: 44px 1fr; gap: 8px 14px; padding: 22px 0; border-top: 1px solid var(--line); }
-  .principles li:last-child { border-bottom: 1px solid var(--line); }
-  .principles .rn { font: italic 18px/1.4 var(--serif); color: var(--gold); }
-  .principles h3 { font-size: 27px; }
-  .principles p { grid-column: 2; margin: 0; color: var(--muted); font-size: 15px; }
-  .facts { display: grid; grid-template-columns: repeat(4, 1fr); margin-top: 64px; border: 1px solid var(--line); border-radius: 18px; overflow: hidden; }
-  .facts div { padding: 22px 24px; background: var(--bg-2); }
-  .facts div + div { border-left: 1px solid var(--line); }
-  .facts strong { display: block; margin-top: 10px; font: 400 22px/1.2 var(--serif); }
-
-  /* Services */
-  .services { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 22px; overflow: hidden; }
-  .service { background: var(--bg-2); padding: 36px; display: grid; gap: 14px; align-content: start; transition: background-color .3s; }
-  .service:hover { background: var(--surface); }
-  .service-top { display: flex; justify-content: space-between; align-items: center; }
-  .service .icon { width: 44px; height: 44px; border-radius: 12px; border: 1px solid var(--line-2); display: grid; place-items: center; color: var(--gold); }
-  .service .icon svg { width: 21px; height: 21px; }
-  .service h3 { font-size: 34px; }
-  .service p { margin: 0; color: var(--muted); }
-  .service .for { font-size: 14px; padding-top: 14px; border-top: 1px dashed var(--line-2); }
-  .service .for b { color: var(--text); font-weight: 500; }
-  .chips { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; padding: 0; margin: 0; }
-  .chips li { font: 12px/1 var(--mono); padding: 7px 11px; border-radius: 999px; border: 1px solid var(--line-2); color: var(--muted); }
+  /* Sections */
+  .section { padding-block: clamp(72px, 10vw, 136px); }
+  .section + .section { border-top: 1px solid var(--line); }
+  .sec-head { max-width: 680px; margin: 0 auto clamp(44px, 6vw, 76px); text-align: center; }
+  h2 { font-family: var(--serif); font-size: clamp(38px, 5.6vw, 66px); line-height: 1.02; letter-spacing: -.02em; text-wrap: balance; }
+  .sec-head p { margin: 18px auto 0; max-width: 44ch; color: var(--muted); text-wrap: pretty; }
 
   /* Work */
-  .projects { display: grid; gap: 104px; }
-  .project { display: grid; grid-template-columns: 1.05fr .95fr; gap: 64px; align-items: center; }
-  .project:nth-child(even) .visual { order: 2; }
-  .visual { position: relative; border-radius: 26px; border: 1px solid var(--line); background: radial-gradient(80% 70% at 50% 30%, #1b1a17, var(--bg-2) 70%); overflow: hidden; }
-  .visual svg { width: 100%; height: auto; }
-  .visual .label { position: absolute; left: 24px; top: 20px; }
-  .visual.shot { padding: 56px 28px 0; aspect-ratio: 4 / 3; }
-  .visual.shot img { display: block; }
-  .visual.shot .desk { width: 100%; border-radius: 12px 12px 0 0; border: 1px solid var(--line-2); border-bottom: 0; }
-  .visual.shot .phone { position: absolute; right: 22px; bottom: 22px; width: 24%; border-radius: 16px; border: 1px solid var(--line-2); box-shadow: 0 24px 50px -16px rgba(0, 0, 0, .85); }
-  .p-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-bottom: 18px; }
-  .status { display: inline-flex; align-items: center; gap: 8px; font: 500 11px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--gold-2); background: var(--gold-soft); border: 1px solid rgba(200, 164, 101, .3); padding: 6px 10px; border-radius: 999px; }
-  .status::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--gold); animation: pulse 2s ease-in-out infinite; }
-  @keyframes pulse { 50% { opacity: .3; } }
-  .project h3 { font-size: clamp(42px, 4.6vw, 62px); }
-  .project h3 small { display: block; font: italic 22px/1.3 var(--serif); color: var(--gold-2); margin-top: 6px; }
-  .project .desc { color: var(--muted); margin: 18px 0 26px; max-width: 520px; }
-  .highlights { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; padding: 22px 0; border-block: 1px solid var(--line); margin-bottom: 22px; }
-  .highlights b { display: block; font: 400 36px/1 var(--serif); }
-  .highlights span { display: block; margin-top: 8px; font-size: 13px; color: var(--muted); line-height: 1.4; }
-  .p-links { display: flex; flex-wrap: wrap; gap: 22px; margin-top: 24px; }
-  .p-links a, .p-links span { font: 500 12px/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; text-decoration: none; }
-  .p-links a { color: var(--gold-2); }
-  .p-links span { color: var(--dim); }
-
-  /* Toolkit */
-  .toolkit { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
-  .tool { border: 1px solid var(--line); border-radius: 20px; background: var(--bg-2); padding: 28px; display: grid; gap: 16px; align-content: start; }
-  .tool h3 { font-size: 30px; }
-  .tool .chips li { font: 14px/1 var(--sans); color: var(--text); padding: 9px 13px; border-radius: 10px; background: rgba(255, 255, 255, .02); }
-  .tool .chips li.key { border-color: rgba(200, 164, 101, .45); color: var(--gold-2); }
-  .tool .why { margin: 0; font: italic 17px/1.4 var(--serif); color: var(--muted); }
-  .tool.wide { grid-column: span 2; }
-
-  /* Process */
-  .steps { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; border-top: 1px solid var(--line); }
-  .step { position: relative; padding: 34px 28px 0 0; }
-  .step::before { content: ""; position: absolute; top: -5px; left: 0; width: 9px; height: 9px; border-radius: 50%; background: var(--bg); border: 1px solid var(--gold); }
-  .step .n { font: italic 46px/1 var(--serif); color: var(--gold); }
-  .step h3 { font-size: 28px; margin: 16px 0 10px; }
-  .step p { margin: 0; color: var(--muted); font-size: 15px; }
-
-  /* Path (filled from JSON) */
-  .path-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; }
-  .timeline { list-style: none; margin: 18px 0 0; padding: 0; border-left: 1px solid var(--line-2); }
-  .timeline li { position: relative; padding: 0 0 32px 26px; }
-  .timeline li::before { content: ""; position: absolute; left: -5px; top: 6px; width: 9px; height: 9px; border-radius: 50%; background: var(--gold); }
-  .timeline h3 { font-size: 26px; margin: 8px 0 4px; }
-  .timeline .org { color: var(--gold-2); font-size: 14px; }
-  .timeline ul { margin: 10px 0 0; padding-left: 18px; color: var(--muted); font-size: 15px; }
-  .awards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 56px; }
-  .award { border: 1px solid var(--line); border-radius: 20px; padding: 26px; background: var(--bg-2); }
-  .award b { font: 400 44px/1 var(--serif); color: var(--gold-2); }
-  .award h3 { font-size: 24px; margin: 14px 0 6px; }
-  .award p { margin: 0; color: var(--muted); font-size: 14.5px; }
-  .certs { margin-top: 56px; }
-  .certs .chips { margin-top: 16px; }
-  .certs .chips li { font: 13.5px/1 var(--sans); color: var(--text); padding: 10px 14px; }
-  .certs .chips li i { font-style: normal; color: var(--gold); font: 11px var(--mono); letter-spacing: .1em; margin-right: 8px; }
-
-  /* FAQ */
-  .faq { max-width: 860px; border-top: 1px solid var(--line); }
-  .faq details { border-bottom: 1px solid var(--line); }
-  .faq summary { list-style: none; cursor: pointer; padding: 26px 0; display: flex; justify-content: space-between; gap: 20px; align-items: center; font: 400 26px/1.2 var(--serif); }
-  .faq summary::-webkit-details-marker { display: none; }
-  .faq summary::after { content: "+"; font: 300 26px/1 var(--sans); color: var(--gold); transition: transform .25s; flex: none; }
-  .faq details[open] summary::after { transform: rotate(45deg); }
-  .faq details p { margin: 0 0 26px; color: var(--muted); max-width: 700px; }
-
-  /* Contact */
-  .contact { padding-bottom: 40px; }
-  .contact-grid { display: grid; grid-template-columns: 1.15fr .85fr; gap: 64px; align-items: end; }
-  .contact h2 { font-size: clamp(54px, 8vw, 116px); line-height: .95; }
-  .contact .sub { color: var(--muted); font-size: 17px; max-width: 480px; margin: 28px 0 0; }
-  .reach { border: 1px solid var(--line); border-radius: 22px; background: var(--bg-2); overflow: hidden; }
-  .reach-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 20px 24px; border-bottom: 1px solid var(--line); text-decoration: none; transition: background-color .2s; }
-  .reach-row:last-child { border-bottom: 0; }
-  a.reach-row:hover { background: var(--surface); }
-  .reach-row strong { display: block; margin-top: 6px; font-weight: 500; font-size: 15.5px; word-break: break-all; }
-  .reach-row .arrow { color: var(--gold); }
-  .copy { border: 1px solid var(--line-2); background: transparent; color: var(--text); font: 500 12px var(--mono); letter-spacing: .08em; padding: 9px 12px; border-radius: 999px; cursor: pointer; white-space: nowrap; }
-  .copy:hover { border-color: var(--gold); color: var(--gold-2); }
-
-  .footer { margin-top: 120px; border-top: 1px solid var(--line); padding: 28px 0 40px; }
-  .footer-inner { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; }
-  .footer a { text-decoration: none; }
-  .footer a:hover { color: var(--gold-2); }
-
-  /* Reveal (only when JS + motion allowed) */
-  .js-reveal .reveal { opacity: 0; transform: translateY(18px); transition: opacity .9s cubic-bezier(.16, 1, .3, 1), transform .9s cubic-bezier(.16, 1, .3, 1); }
-  .js-reveal .reveal.in { opacity: 1; transform: none; }
-
-  /* ---------- Responsive ---------- */
-  @media (max-width: 1020px) {
-    .hero { min-height: 0; }
-    .hero-grid { grid-template-columns: 1fr; gap: 72px; }
-    .about-grid, .contact-grid, .path-grid { grid-template-columns: 1fr; gap: 48px; }
-    .project { grid-template-columns: 1fr; gap: 32px; }
-    .project:nth-child(even) .visual { order: 0; }
-    .toolkit { grid-template-columns: repeat(2, 1fr); }
-    .facts { grid-template-columns: repeat(2, 1fr); }
-    .facts div:nth-child(3) { border-left: 0; }
-    .facts div:nth-child(n+3) { border-top: 1px solid var(--line); }
-    .awards { grid-template-columns: 1fr 1fr; }
+  .projects { list-style: none; margin: 0; padding: 0; display: grid; gap: clamp(56px, 7vw, 88px) clamp(28px, 4vw, 52px); }
+  @media (min-width: 880px) { .projects { grid-template-columns: 1fr 1fr; } }
+  .shot { display: block; aspect-ratio: 16 / 10; overflow: hidden; border-radius: 14px; background: var(--surface); box-shadow: 0 0 0 1px var(--line); }
+  .shot img { width: 100%; height: 100%; object-fit: cover; transition: transform 1s var(--ease); }
+  .project:hover .shot img { transform: scale(1.025); }
+  .p-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 16px; margin-top: 24px; }
+  .project h3 { font-family: var(--serif); font-size: 34px; line-height: 1.1; letter-spacing: -.01em; }
+  .kind { font-size: 14px; color: var(--faint); }
+  .project p { margin: 10px 0 0; color: var(--muted); max-width: 52ch; text-wrap: pretty; }
+  .project .stack { margin-top: 12px; font-size: 14px; color: var(--faint); }
+  .links { display: flex; flex-wrap: wrap; gap: 8px 24px; margin-top: 18px; }
+  .links a {
+    font-size: 15px; font-weight: 500; text-decoration: underline;
+    text-decoration-color: var(--line); text-decoration-thickness: 1px; text-underline-offset: 5px;
+    transition: text-decoration-color .2s;
   }
-  @media (max-width: 820px) {
-    .nav-links { display: none; }
-    .services { grid-template-columns: 1fr; }
-    .steps { grid-template-columns: 1fr 1fr; row-gap: 40px; }
+  .links a:hover { text-decoration-color: currentColor; }
+
+  /* Services */
+  .offer { list-style: none; margin: 0; padding: 0; display: grid; gap: 36px 32px; }
+  @media (min-width: 600px) { .offer { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 980px) { .offer { grid-template-columns: repeat(4, 1fr); } }
+  .offer li { padding-top: 20px; border-top: 1px solid var(--ink); }
+  .offer h3 { font-size: 17px; font-weight: 600; letter-spacing: -.005em; }
+  .offer p { margin: 8px 0 0; font-size: 15px; line-height: 1.55; color: var(--muted); }
+  .process { margin: clamp(48px, 6vw, 72px) auto 0; max-width: 46em; text-align: center; color: var(--muted); text-wrap: pretty; }
+  .process strong { color: var(--ink); font-weight: 600; }
+
+  /* Contact band + footer */
+  .band { background: var(--band-bg); color: var(--band-ink); text-align: center; padding-block: clamp(88px, 12vw, 160px); }
+  .band h2 { font-size: clamp(44px, 7.4vw, 92px); line-height: 1; }
+  .band h2 em { color: var(--band-accent); }
+  .band .sub { margin: 26px auto 0; max-width: 36em; color: var(--band-muted); font-size: clamp(17px, 1.8vw, 19px); text-wrap: pretty; }
+  .reach { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 12px; margin-top: 40px; }
+  .band .btn { background: var(--band-ink); color: var(--band-bg); }
+  .copy {
+    min-height: 52px; padding: 0 22px; border-radius: 999px; cursor: pointer;
+    background: transparent; color: var(--band-ink); border: 1px solid var(--band-line);
+    font: 500 15px/1 var(--sans); transition: border-color .2s;
   }
-  @media (max-width: 640px) {
-    .wrap { padding: 0 18px; }
-    .sec { padding-top: 96px; }
-    .hero { padding: 36px 0 88px; }
-    .service { padding: 28px 24px; }
-    .toolkit, .awards { grid-template-columns: 1fr; }
-    .tool.wide { grid-column: auto; }
-    .facts { grid-template-columns: 1fr; }
-    .facts div + div { border-left: 0; border-top: 1px solid var(--line); }
-    .highlights b { font-size: 30px; }
-    .steps { grid-template-columns: 1fr; }
-    .tag-a { left: 0; top: 10%; }
-    .tag-b { right: 0; bottom: 14%; }
-    .brand-name { display: none; }
-    .ctas .btn { flex: 1 1 auto; justify-content: center; }
-    .fig { letter-spacing: .08em; font-size: 10px; }
+  .copy:hover { border-color: var(--band-muted); }
+  .elsewhere { list-style: none; margin: 32px 0 0; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 28px; font-size: 15px; }
+  .elsewhere a { color: var(--band-muted); text-decoration: none; transition: color .2s; }
+  .elsewhere a:hover { color: var(--band-ink); }
+  .foot { background: var(--band-bg); border-top: 1px solid var(--band-line); }
+  .foot .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; padding-block: 28px; font-size: 14px; color: var(--band-muted); }
+  .foot a { color: inherit; text-decoration: none; }
+  .foot a:hover { color: var(--band-ink); }
+
+  /* Calm motion: the hero settles in on load; sections fade up once as they scroll into view */
+  @media (prefers-reduced-motion: no-preference) {
+    .hero > .wrap > * { animation: rise .9s var(--ease) both; }
+    .hero > .wrap > :nth-child(2) { animation-delay: .06s; }
+    .hero > .wrap > :nth-child(3) { animation-delay: .12s; }
+    .hero > .wrap > :nth-child(4) { animation-delay: .2s; }
+    .hero > .wrap > :nth-child(5) { animation-delay: .28s; }
+    .hero > .wrap > :nth-child(6) { animation-delay: .34s; }
+    .js .reveal { opacity: 0; transform: translateY(16px); transition: opacity .9s var(--ease), transform .9s var(--ease); }
+    .js .reveal.in { opacity: 1; transform: none; }
   }
-  @media (prefers-reduced-motion: reduce) {
-    html { scroll-behavior: auto; }
-    *, *::before, *::after { animation: none !important; transition: none !important; }
-  }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  @keyframes rise { from { opacity: 0; transform: translateY(14px); } }
 </style>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
 
-<header class="nav">
-  <div class="wrap nav-inner">
-    <a class="brand" href="#top" aria-label="Bhargav Angadi, home"><span class="mono-mark">BA</span><span class="brand-name">Bhargav Angadi</span></a>
-    <nav class="nav-links" aria-label="Main">
-      <a href="#about">About</a>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#main">Bhargav Angadi</a>
+    <nav aria-label="Main">
       <a href="#work">Work</a>
-      <a href="#services">Services</a>
-      <a href="#toolkit">Toolkit</a>
-      <a href="#process">Process</a>
       <a href="#contact">Contact</a>
     </nav>
-    <a class="btn btn-line" href="#contact" data-nod>Hire me</a>
   </div>
 </header>
 
 <main id="main">
-
-  <!-- ================= HERO ================= -->
-  <section class="hero" id="top">
-    <div class="wrap hero-grid">
-      <div class="hero-copy">
-        <p class="pill reveal"><span class="dot"></span>Open to full-time roles &amp; freelance projects</p>
-        <p class="label kicker reveal">Software developer · Java · React</p>
-        <h1 class="reveal">Bhargav<br><em>Angadi.</em></h1>
-        <p class="lead reveal">I'm a software developer who builds <em>reliable Java backends</em>, web apps and APIs, and the websites and stores small businesses run on.</p>
-        <div class="ctas reveal">
-          <a class="btn btn-gold" href="#work">See my work
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-          </a>
-          <a class="btn btn-line" href="#contact" data-nod>Get a free quote ↗</a>
-        </div>
-        <ul class="social reveal">
-          <li><a href="https://github.com/bhargavang" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5a11.5 11.5 0 0 0-3.64 22.41c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.52-1.33-1.28-1.69-1.28-1.69-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.56-.29-5.25-1.28-5.25-5.69 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.84 1.19 3.1 0 4.42-2.7 5.39-5.27 5.68.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5z"/></svg>GitHub</a></li>
-          <li><a href="https://www.linkedin.com/in/bhargavangadi/" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg>LinkedIn</a></li>
-          <li><a href="https://wa.me/917411946909?text=Hi%20Bhargav%2C%20I%27d%20like%20to%20discuss%20a%20project." target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.5 8.5 0 0 1-12.6 7.4L3 20l1.2-5.1A8.5 8.5 0 1 1 21 11.5z"/></svg>WhatsApp</a></li>
-        </ul>
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="wrap">
+      <img class="avatar" src="img/avatar-192.webp" width="96" height="96" alt="Bhargav Angadi's 3D avatar">
+      <p class="eyebrow">Software developer · India</p>
+      <h1 id="hero-title">Software that ships, <span class="br-wide"></span><em>and keeps working.</em></h1>
+      <p class="lead">I build reliable Java backends, web apps and APIs, and the websites and stores small businesses run on.</p>
+      <div class="cta">
+        <a class="btn" href="#contact">Get a free quote
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
       </div>
-
-      <div class="hero-visual reveal">
-        <svg class="orbit" viewBox="0 0 600 600" aria-hidden="true">
-          <circle cx="300" cy="300" r="292" fill="none" stroke="#22252b"/>
-          <circle cx="300" cy="300" r="250" fill="none" stroke="#1d2025"/>
-          <g class="spin">
-            <circle cx="300" cy="300" r="272" fill="none" stroke="#c8a465" stroke-opacity=".45" stroke-dasharray="1 9"/>
-            <circle cx="572" cy="300" r="3" fill="#e3c78f"/>
-            <circle cx="28" cy="300" r="2" fill="#8a9bb0"/>
-          </g>
-          <g font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="2" fill="#6f6f72">
-            <text x="470" y="92">UI</text>
-            <text x="548" y="420">API</text>
-            <text x="40" y="470">DB</text>
-            <text x="64" y="128">SEO</text>
-          </g>
-        </svg>
-
-        <div class="arch" title="Say hi">
-          <canvas aria-hidden="true"></canvas>
-          <div class="arch-fallback" aria-hidden="true">BA</div>
-          <p class="arch-loading label">Loading 3D…</p>
-        </div>
-
-        <div class="tag tag-a"><span class="label">Status</span><strong><span class="dot"></span>Available now</strong></div>
-        <div class="tag tag-b"><span class="label">Replies</span><strong>Within 24 hours</strong></div>
-        <div class="fig label"><span>Fig. 01 · rendered live</span><span>Developer · India</span></div>
-      </div>
+      <p class="note"><span class="dot" aria-hidden="true"></span>Open to freelance projects and full-time roles<span class="sep"> · </span><span class="then">Replies within 24 hours</span></p>
     </div>
-    <a class="scroll-cue label" href="#about">Scroll</a>
   </section>
 
-  <!-- ================= TICKER ================= -->
-  <div class="ticker" aria-label="Quick facts">
-    <div class="ticker-track">
-      <ul>
-        <li><b>Java · Spring Boot</b><span>backend stack</span></li>
-        <li><b>5 of 8</b><span>BudgetX services built</span></li>
-        <li><b>JWT · Redis · Kafka</b><span>auth, rate limits, events</span></li>
-        <li><b>React</b><span>web apps &amp; PWAs</span></li>
-        <li><b>3</b><span>more builds in progress</span></li>
-        <li><b>&lt;24h</b><span>reply time</span></li>
+  <section class="section" id="work" aria-labelledby="work-title">
+    <div class="wrap">
+      <header class="sec-head reveal">
+        <h2 id="work-title">Real builds, <em>real problems.</em></h2>
+        <p>Working demos for the kinds of businesses I build for, plus my own finance app. All the code is on GitHub.</p>
+      </header>
+
+      <ul class="projects">
+        <li class="project reveal">
+          <a class="shot" href="https://saffron-table-one.vercel.app" target="_blank" rel="noopener noreferrer" tabindex="-1" aria-hidden="true">
+            <img src="img/saffron-table.webp" srcset="img/saffron-table-800.webp 800w, img/saffron-table.webp 1600w" sizes="(min-width: 1120px) 520px, (min-width: 880px) 46vw, 92vw" width="1600" height="1000" loading="lazy" decoding="async" alt="">
+          </a>
+          <div class="p-head">
+            <h3>Saffron Table</h3>
+            <span class="kind"><span class="dot" aria-hidden="true"></span>Live demo</span>
+          </div>
+          <p>A demo restaurant website with menu, gallery and online table booking. Guest and owner both get an email, and staff manage bookings from an admin page.</p>
+          <p class="stack">Next.js · TypeScript · Tailwind · PostgreSQL</p>
+          <div class="links">
+            <a href="https://saffron-table-one.vercel.app" target="_blank" rel="noopener noreferrer">Visit the live site ↗</a>
+            <a href="https://github.com/bhargavang/saffron-table" target="_blank" rel="noopener noreferrer">Code ↗</a>
+          </div>
+        </li>
+
+        <li class="project reveal">
+          <a class="shot" href="https://github.com/bhargavang/caredesk" target="_blank" rel="noopener noreferrer" tabindex="-1" aria-hidden="true">
+            <img src="img/caredesk.webp" srcset="img/caredesk-800.webp 800w, img/caredesk.webp 1600w" sizes="(min-width: 1120px) 520px, (min-width: 880px) 46vw, 92vw" width="1600" height="1000" loading="lazy" decoding="async" alt="">
+          </a>
+          <div class="p-head">
+            <h3>CareDesk</h3>
+            <span class="kind">Booking app · clinics &amp; salons</span>
+          </div>
+          <p>Customers book a free slot online and staff run the day from a dashboard. The database rules out double bookings, and reminders go out the day before.</p>
+          <p class="stack">Java · Spring Boot · React · PostgreSQL · Docker</p>
+          <div class="links">
+            <a href="https://github.com/bhargavang/caredesk" target="_blank" rel="noopener noreferrer">Code ↗</a>
+          </div>
+        </li>
+
+        <li class="project reveal">
+          <a class="shot" href="https://github.com/bhargavang/kora-threads-theme" target="_blank" rel="noopener noreferrer" tabindex="-1" aria-hidden="true">
+            <img src="img/kora-threads.webp" srcset="img/kora-threads-800.webp 800w, img/kora-threads.webp 1600w" sizes="(min-width: 1120px) 520px, (min-width: 880px) 46vw, 92vw" width="1600" height="1000" loading="lazy" decoding="async" alt="">
+          </a>
+          <div class="p-head">
+            <h3>Kora Threads</h3>
+            <span class="kind">Shopify theme · clothing brand</span>
+          </div>
+          <p>A custom Shopify theme for a demo handmade clothing brand, with a size guide, fabric and care details, and an Order on WhatsApp button.</p>
+          <p class="stack">Shopify · Liquid · JavaScript · CSS</p>
+          <div class="links">
+            <a href="https://github.com/bhargavang/kora-threads-theme" target="_blank" rel="noopener noreferrer">Theme code ↗</a>
+          </div>
+        </li>
+
+        <li class="project reveal">
+          <a class="shot" href="https://github.com/bhargavang/Budgetx" target="_blank" rel="noopener noreferrer" tabindex="-1" aria-hidden="true">
+            <img src="img/budgetx.webp" srcset="img/budgetx-800.webp 800w, img/budgetx.webp 1600w" sizes="(min-width: 1120px) 520px, (min-width: 880px) 46vw, 92vw" width="1600" height="1000" loading="lazy" decoding="async" alt="">
+          </a>
+          <div class="p-head">
+            <h3>BudgetX</h3>
+            <span class="kind">Personal finance app</span>
+          </div>
+          <p>Track salary, EMIs and expenses and see what's safe to invest. Spring Boot microservices behind an API gateway, with an installable React app.</p>
+          <p class="stack">Java · Spring Cloud · Kafka · Redis · MySQL · React</p>
+          <div class="links">
+            <a href="https://github.com/bhargavang/Budgetx" target="_blank" rel="noopener noreferrer">Code ↗</a>
+          </div>
+        </li>
       </ul>
-      <ul aria-hidden="true">
-        <li><b>Java · Spring Boot</b><span>backend stack</span></li>
-        <li><b>5 of 8</b><span>BudgetX services built</span></li>
-        <li><b>JWT · Redis · Kafka</b><span>auth, rate limits, events</span></li>
-        <li><b>React</b><span>web apps &amp; PWAs</span></li>
-        <li><b>3</b><span>more builds in progress</span></li>
-        <li><b>&lt;24h</b><span>reply time</span></li>
+    </div>
+  </section>
+
+  <section class="section" id="services" aria-labelledby="services-title">
+    <div class="wrap">
+      <header class="sec-head reveal">
+        <h2 id="services-title">What I can <em>build for you.</em></h2>
+      </header>
+      <ul class="offer reveal">
+        <li><h3>Business websites</h3><p>Fast, mobile-friendly sites that show up on Google and turn visitors into calls and bookings.</p></li>
+        <li><h3>Online stores</h3><p>Shopify or WooCommerce stores, set up and ready to take payments.</p></li>
+        <li><h3>Web apps &amp; APIs</h3><p>Booking systems, dashboards and portals on a solid Java or Node.js backend.</p></li>
+        <li><h3>Fixes &amp; speed-ups</h3><p>A slow, broken or outdated site, fixed and then kept updated and secure.</p></li>
       </ul>
-    </div>
-  </div>
-
-  <!-- ================= ABOUT ================= -->
-  <section class="sec" id="about">
-    <div class="wrap">
-      <header class="sec-head reveal">
-        <p class="sec-label label"><span class="num"></span>About</p>
-        <h2>Software that <em>ships</em>, and keeps working.</h2>
-      </header>
-      <div class="about-grid">
-        <div class="about-copy reveal">
-          <p class="big">I'm Bhargav, a software developer from India who builds <em>Java backends, web apps and APIs.</em></p>
-          <p>My main project, BudgetX, is a personal-finance app built as Spring Boot microservices behind an API gateway, with Kafka events, Redis rate limiting, JWT auth and a React web app. That's how I like to build: clear service boundaries, secure by default, and easy to run with Docker.</p>
-          <p>I started out building data dashboards in Tableau and Power BI, so I care about clean data as much as clean code. I also take on freelance work: websites, online stores and custom tools for small businesses.</p>
-        </div>
-        <ol class="principles reveal">
-          <li><span class="rn">I.</span><h3>Secure by default</h3><p>Tokens checked at the gateway, inputs validated, secrets never committed.</p></li>
-          <li><span class="rn">II.</span><h3>Fast on every screen</h3><p>Built mobile-first and tuned to load quickly on budget phones and slow networks.</p></li>
-          <li><span class="rn">III.</span><h3>Built to hand over</h3><p>Clean, documented code and a one-command Docker setup, so the next developer isn't lost.</p></li>
-        </ol>
-      </div>
-      <div class="facts reveal">
-        <div><span class="label">Role</span><strong>Software developer</strong></div>
-        <div><span class="label">Core stack</span><strong>Java · Spring Boot · React</strong></div>
-        <div><span class="label">Based in</span><strong>India</strong></div>
-        <div><span class="label">Open to</span><strong>Full-time roles &amp; freelance</strong></div>
-      </div>
+      <p class="process reveal"><strong>How it works:</strong> a free 20–30 minute call, a fixed price in writing before any work starts, progress you can see every week, and 30 days of free fixes after launch.</p>
     </div>
   </section>
 
-  <!-- ================= WORK =================
-       EDIT: when a project ships, swap the "soon" <span> for real <a href="..."> links
-       and change its status from "In progress" to "Live". -->
-  <section class="sec" id="work">
+  <section class="band" id="contact" aria-labelledby="contact-title">
     <div class="wrap">
-      <header class="sec-head reveal">
-        <p class="sec-label label"><span class="num"></span>Selected work</p>
-        <h2>Real builds, <em>real</em> problems.</h2>
-        <p>BudgetX is my main project. Three more client-style builds are in progress; live demos and code links go up as each one ships.</p>
-      </header>
-
-      <div class="projects">
-        <!-- Project 1: BudgetX (real project, screenshots from its repo) -->
-        <article class="project">
-          <div class="visual shot reveal">
-            <span class="label">Fig. 02 · BudgetX web app</span>
-            <img class="desk" src="https://raw.githubusercontent.com/bhargavang/Budgetx/main/docs/screenshots/ui-refresh/after-dark-desktop-home.png" alt="BudgetX dashboard on a laptop, dark theme" loading="lazy">
-            <img class="phone" src="https://raw.githubusercontent.com/bhargavang/Budgetx/main/docs/screenshots/ui-refresh/after-dark-mobile-today.png" alt="BudgetX Today screen on a phone" loading="lazy">
-          </div>
-          <div class="reveal">
-            <div class="p-meta"><span class="label">01 · Microservices · Fintech · 2026</span><span class="status">Core services done</span></div>
-            <h3>BudgetX <small>AI-powered personal finance manager</small></h3>
-            <p class="desc">Track salary, EMIs and expenses, see what's safe to invest, and get AI guidance that's checked against safety rules first. Built as Spring Boot microservices behind an API gateway, with a React web app you can install on your phone.</p>
-            <div class="highlights">
-              <div><b>5 of 8</b><span>services built, behind one API gateway</span></div>
-              <div><b>20/s</b><span>per-user rate limit with Redis</span></div>
-              <div><b>15 min</b><span>JWT access tokens, 7-day refresh</span></div>
-            </div>
-            <ul class="chips"><li>Java 17</li><li>Spring Boot</li><li>Spring Cloud</li><li>Kafka</li><li>Redis</li><li>MySQL</li><li>Docker</li><li>React</li></ul>
-            <div class="p-links"><a href="https://github.com/bhargavang/Budgetx" target="_blank" rel="noopener noreferrer">Code on GitHub ↗</a></div>
-          </div>
-        </article>
-
-        <!-- Project 2: Saffron Table -->
-        <article class="project">
-          <div class="visual reveal">
-            <span class="label">Fig. 03 · booking flow</span>
-            <svg viewBox="0 0 480 380" role="img" aria-label="Diagram: a guest picks a time, fills the booking form, the API saves it to Postgres and emails both the guest and the owner.">
-              <defs><marker id="ar" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4 0 8z" fill="#3d424b"/></marker></defs>
-              <g font-family="Inter, sans-serif" font-size="14" fill="#ece8e1" text-anchor="middle">
-                <rect x="40" y="70" width="180" height="46" rx="12" fill="#16181c" stroke="#30343c"/><text x="130" y="98">Guest picks a time</text>
-                <rect x="40" y="170" width="180" height="46" rx="12" fill="#16181c" stroke="#30343c"/><text x="130" y="198">Booking form</text>
-                <rect x="40" y="270" width="180" height="46" rx="12" fill="#1e1b14" stroke="#c8a465" stroke-opacity=".6"/><text x="130" y="298">API + Postgres</text>
-                <rect x="282" y="170" width="168" height="46" rx="12" fill="#16181c" stroke="#30343c"/><text x="366" y="198">Email → guest</text>
-                <rect x="282" y="270" width="168" height="46" rx="12" fill="#16181c" stroke="#30343c"/><text x="366" y="298">Email → owner</text>
-              </g>
-              <g fill="none" stroke="#3d424b" stroke-width="1.5" marker-end="url(#ar)">
-                <path d="M130 116V168"/><path d="M130 216V268"/><path d="M220 293H280"/><path d="M220 293C252 293 250 193 280 193"/>
-              </g>
-              <circle r="4" fill="#e3c78f"><animateMotion dur="3.6s" repeatCount="indefinite" path="M130 93V293H282"/></circle>
-              <circle r="4" fill="#c8a465"><animateMotion dur="3.6s" begin="1.8s" repeatCount="indefinite" path="M130 93V293H220C252 293 250 193 282 193"/></circle>
-            </svg>
-          </div>
-          <div class="reveal">
-            <div class="p-meta"><span class="label">02 · Business website · Restaurants · 2026</span><span class="status">In progress</span></div>
-            <h3>Saffron Table <small>restaurant website + online booking</small></h3>
-            <p class="desc">Many restaurants still take bookings by phone, and their websites are slow on mobile. Saffron Table is a fast, mobile-first site with menu, gallery and maps, plus a booking form that confirms by email to both guest and owner.</p>
-            <div class="highlights">
-              <div><b>24/7</b><span>online booking</span></div>
-              <div><b>2×</b><span>confirmation emails per booking</span></div>
-              <div><b>1 file</b><span>rebrands it for any restaurant</span></div>
-            </div>
-            <ul class="chips"><li>Next.js</li><li>TypeScript</li><li>Tailwind</li><li>Node.js</li><li>PostgreSQL</li></ul>
-            <div class="p-links"><span>Live demo · soon</span><span>Code on GitHub · soon</span></div>
-          </div>
-        </article>
-
-        <!-- Project 3: Kora Threads -->
-        <article class="project">
-          <div class="visual reveal">
-            <span class="label">Fig. 04 · order on WhatsApp</span>
-            <svg viewBox="0 0 480 380" role="img" aria-label="Mock-up: a Shopify product page with size options and an Order on WhatsApp button, next to a WhatsApp chat about the order.">
-              <defs><linearGradient id="kimg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3a3226"/><stop offset="1" stop-color="#c8a465"/></linearGradient></defs>
-              <rect x="60" y="44" width="172" height="316" rx="28" fill="#0f1013" stroke="#30343c"/>
-              <rect x="121" y="56" width="50" height="6" rx="3" fill="#30343c"/>
-              <rect x="76" y="76" width="140" height="118" rx="14" fill="url(#kimg)"/>
-              <text x="146" y="142" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="12" letter-spacing="3" fill="#0b0c0e" fill-opacity=".7">KORA</text>
-              <g font-family="Inter, sans-serif" font-size="13">
-                <text x="76" y="218" fill="#ece8e1">Handloom Kurta</text>
-                <text x="76" y="237" fill="#e3c78f">₹1,299</text>
-                <g font-size="11" text-anchor="middle">
-                  <rect x="76" y="250" width="28" height="22" rx="6" fill="none" stroke="#30343c"/><text x="90" y="265" fill="#a4a29c">S</text>
-                  <rect x="110" y="250" width="28" height="22" rx="6" fill="#c8a465"/><text x="124" y="265" fill="#17130b">M</text>
-                  <rect x="144" y="250" width="28" height="22" rx="6" fill="none" stroke="#30343c"/><text x="158" y="265" fill="#a4a29c">L</text>
-                  <rect x="178" y="250" width="32" height="22" rx="6" fill="none" stroke="#30343c"/><text x="194" y="265" fill="#a4a29c">XL</text>
-                </g>
-                <rect x="76" y="290" width="140" height="38" rx="19" fill="#25d366"/>
-                <text x="146" y="314" text-anchor="middle" font-size="12" font-weight="600" fill="#06301a">Order on WhatsApp</text>
-              </g>
-              <g font-family="Inter, sans-serif" font-size="13">
-                <g opacity="0">
-                  <rect x="258" y="112" width="190" height="58" rx="16" fill="#123726"/>
-                  <text x="274" y="137" fill="#e8f5ee">Hi! Is this kurta</text><text x="274" y="156" fill="#e8f5ee">available in M?</text>
-                  <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;.12;.85;1" dur="6s" repeatCount="indefinite"/>
-                </g>
-                <g opacity="0">
-                  <rect x="278" y="186" width="172" height="58" rx="16" fill="#1a1c21" stroke="#30343c"/>
-                  <text x="294" y="211" fill="#ece8e1">Yes! Sending you</text><text x="294" y="230" fill="#ece8e1">the payment link.</text>
-                  <animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;.3;.42;.85;1" dur="6s" repeatCount="indefinite"/>
-                </g>
-              </g>
-              <g font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="1.5" fill="#6f6f72">
-                <text x="262" y="290">ORDERS ARRIVE ON WHATSAPP</text>
-                <text x="262" y="308">STOCK &amp; PAYMENTS IN SHOPIFY</text>
-              </g>
-            </svg>
-          </div>
-          <div class="reveal">
-            <div class="p-meta"><span class="label">03 · Online store · Small brands · 2026</span><span class="status">In progress</span></div>
-            <h3>Kora Threads <small>Shopify store for a handmade clothing brand</small></h3>
-            <p class="desc">Small brands often sell only through Instagram DMs and track every order by hand. Kora Threads is a Shopify store with a customised theme, filters, size guide, discount codes and an "Order on WhatsApp" button for customers who prefer to chat.</p>
-            <div class="highlights">
-              <div><b>1-tap</b><span>order on WhatsApp</span></div>
-              <div><b>S–XXL</b><span>size guide pop-up</span></div>
-              <div><b>Liquid</b><span>custom theme sections</span></div>
-            </div>
-            <ul class="chips"><li>Shopify</li><li>Liquid</li><li>JavaScript</li><li>CSS</li></ul>
-            <div class="p-links"><span>Live store · soon</span><span>Theme code · soon</span></div>
-          </div>
-        </article>
-
-        <!-- Project 4: CareDesk -->
-        <article class="project">
-          <div class="visual reveal">
-            <span class="label">Fig. 05 · slot booking</span>
-            <svg viewBox="0 0 480 380" role="img" aria-label="Diagram: a weekly grid of appointment slots; one free slot becomes booked and is locked so it can't be booked twice.">
-              <g font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="1.5" fill="#6f6f72" text-anchor="middle">
-                <text x="72" y="74">MON</text><text x="156" y="74">TUE</text><text x="240" y="74">WED</text><text x="324" y="74">THU</text><text x="408" y="74">FRI</text>
-              </g>
-              <g id="slots" font-family="JetBrains Mono, monospace" font-size="11" text-anchor="middle"></g>
-              <g font-family="JetBrains Mono, monospace" font-size="11" text-anchor="middle">
-                <rect x="202" y="186" width="76" height="40" rx="9" fill="#c8a465" fill-opacity="0" stroke="#30343c">
-                  <animate attributeName="fill-opacity" values="0;0;.16;.16;0" keyTimes="0;.35;.45;.9;1" dur="5s" repeatCount="indefinite"/>
-                  <animate attributeName="stroke" values="#30343c;#30343c;#c8a465;#c8a465;#30343c" keyTimes="0;.35;.45;.9;1" dur="5s" repeatCount="indefinite"/>
-                </rect>
-                <text x="240" y="210" fill="#6f6f72"><animate attributeName="opacity" values="1;1;0;0;1" keyTimes="0;.35;.45;.9;1" dur="5s" repeatCount="indefinite"/>11:00</text>
-                <text x="240" y="210" fill="#e3c78f" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;.35;.45;.9;1" dur="5s" repeatCount="indefinite"/>locked ✓</text>
-              </g>
-              <text x="240" y="352" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="1.2" fill="#6f6f72">SLOT LOCKED IN A DB TRANSACTION → NO DOUBLE BOOKINGS</text>
-            </svg>
-          </div>
-          <div class="reveal">
-            <div class="p-meta"><span class="label">04 · Web app + API · Clinics &amp; salons · 2026</span><span class="status">In progress</span></div>
-            <h3>CareDesk <small>appointment booking system</small></h3>
-            <p class="desc">Clinics and salons juggle appointments in notebooks and phone calls, which leads to double bookings and no-shows. CareDesk lets customers book a free slot online while staff run the day from a secure dashboard, powered by a Java REST API.</p>
-            <div class="highlights">
-              <div><b>0</b><span>double bookings, enforced by the database</span></div>
-              <div><b>24h</b><span>reminder email before each visit</span></div>
-              <div><b>JWT</b><span>secured staff dashboard</span></div>
-            </div>
-            <ul class="chips"><li>Java</li><li>Spring Boot</li><li>React</li><li>PostgreSQL</li><li>Docker</li></ul>
-            <div class="p-links"><span>Live demo · soon</span><span>Code on GitHub · soon</span></div>
-          </div>
-        </article>
+      <h2 id="contact-title" class="reveal">Let's build something <em>worth launching.</em></h2>
+      <p class="sub reveal">Have a project, a role or just an idea? I work remotely with clients anywhere, fit calls to your time zone, and reply within 24 hours.</p>
+      <div class="reach reveal">
+        <a class="btn" href="mailto:bhargav.angadi@gmail.com">bhargav.angadi@gmail.com</a>
+        <button class="copy" type="button" data-copy="bhargav.angadi@gmail.com">Copy email</button>
       </div>
-    </div>
-  </section>
-
-  <!-- ================= SERVICES ================= -->
-  <section class="sec" id="services">
-    <div class="wrap">
-      <header class="sec-head reveal">
-        <p class="sec-label label"><span class="num"></span>Services</p>
-        <h2>What I build <em>for clients.</em></h2>
-        <p>From a one-page site to a custom web app, built to bring in customers and easy for you to run.</p>
-      </header>
-      <div class="services reveal">
-        <article class="service">
-          <div class="service-top"><span class="label">01</span><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg></span></div>
-          <h3>Business websites</h3>
-          <p>Fast, mobile-friendly sites that show up on Google and turn visitors into calls, bookings and leads.</p>
-          <ul class="chips"><li>React</li><li>Next.js</li><li>SEO</li></ul>
-          <p class="for"><b>Great for</b> shops, clinics, restaurants, gyms</p>
-        </article>
-        <article class="service">
-          <div class="service-top"><span class="label">02</span><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 7h12l-1 13H7L6 7z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg></span></div>
-          <h3>Online stores</h3>
-          <p>Shopify or WooCommerce stores set up and customised, ready to take payments with products, shipping and taxes done.</p>
-          <ul class="chips"><li>Shopify</li><li>WooCommerce</li><li>Payments</li></ul>
-          <p class="for"><b>Great for</b> brands selling on Instagram or WhatsApp</p>
-        </article>
-        <article class="service">
-          <div class="service-top"><span class="label">03</span><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v6c0 1.7 3.1 3 7 3s7-1.3 7-3V6"/><path d="M5 12v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6"/></svg></span></div>
-          <h3>Web apps &amp; APIs</h3>
-          <p>Dashboards, booking systems, client portals and integrations that connect your tools and save hours of manual work.</p>
-          <ul class="chips"><li>Java</li><li>Node.js</li><li>PostgreSQL</li></ul>
-          <p class="for"><b>Great for</b> startups building an MVP, teams stuck in spreadsheets</p>
-        </article>
-        <article class="service">
-          <div class="service-top"><span class="label">04</span><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L4 17l3 3 5.3-5.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.4-.6-.6-2.4 2.5-2.5z"/></svg></span></div>
-          <h3>Fixes &amp; speed-ups</h3>
-          <p>Broken layout, slow site, plugin errors or a missing feature? I fix it fast and keep your site updated and secure.</p>
-          <ul class="chips"><li>Bug fixes</li><li>Performance</li><li>WordPress</li></ul>
-          <p class="for"><b>Great for</b> any site that's slow, broken or outdated</p>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <!-- ================= TOOLKIT ================= -->
-  <section class="sec" id="toolkit">
-    <div class="wrap">
-      <header class="sec-head reveal">
-        <p class="sec-label label"><span class="num"></span>Toolkit</p>
-        <h2>Tools I <em>reach for</em>, and why.</h2>
-      </header>
-      <div class="toolkit">
-        <article class="tool reveal"><span class="label">01</span><h3>Backend</h3>
-          <ul class="chips"><li class="key">Java</li><li class="key">Spring Boot</li><li>Spring Cloud</li><li>REST APIs</li><li>Node.js</li><li>Express</li></ul>
-          <p class="why">Clear service boundaries and honest APIs.</p></article>
-        <article class="tool reveal"><span class="label">02</span><h3>Frontend</h3>
-          <ul class="chips"><li class="key">React</li><li class="key">Next.js</li><li>TypeScript</li><li>JavaScript</li><li>HTML &amp; CSS</li><li>Tailwind CSS</li></ul>
-          <p class="why">Interfaces that feel fast on any phone.</p></article>
-        <article class="tool reveal"><span class="label">03</span><h3>Data &amp; messaging</h3>
-          <ul class="chips"><li class="key">MySQL</li><li class="key">Redis</li><li>Kafka</li><li>PostgreSQL</li><li>MongoDB</li><li>SQL</li></ul>
-          <p class="why">Model the data first; the endpoints follow.</p></article>
-        <article class="tool reveal"><span class="label">04</span><h3>DevOps &amp; tools</h3>
-          <ul class="chips"><li class="key">Docker</li><li class="key">Git &amp; GitHub</li><li>Maven</li><li>Vercel</li><li>Netlify</li></ul>
-          <p class="why">Runs the same on my laptop and in production.</p></article>
-        <article class="tool reveal"><span class="label">05</span><h3>Stores &amp; CMS</h3>
-          <ul class="chips"><li class="key">Shopify</li><li>WordPress</li><li>WooCommerce</li><li>Stripe</li></ul>
-          <p class="why">Stores and sites clients can update themselves.</p></article>
-        <article class="tool reveal"><span class="label">06</span><h3>Where I started</h3>
-          <ul class="chips"><li>Python</li><li>Tableau</li><li>Power BI</li><li>Excel</li></ul>
-          <p class="why">Turning raw data into dashboards people actually use.</p></article>
-      </div>
-    </div>
-  </section>
-
-  <!-- ================= PROCESS ================= -->
-  <section class="sec" id="process">
-    <div class="wrap">
-      <header class="sec-head reveal">
-        <p class="sec-label label"><span class="num"></span>Process</p>
-        <h2>Simple process, <em>no surprises.</em></h2>
-        <p>You always know what you're getting, what it costs and when it'll be done.</p>
-      </header>
-      <ol class="steps reveal">
-        <li class="step"><span class="n">i.</span><h3>Free call</h3><p>Tell me what you need. 20–30 minutes, no obligation.</p></li>
-        <li class="step"><span class="n">ii.</span><h3>Clear quote</h3><p>A fixed price, a timeline and exactly what's included, in writing.</p></li>
-        <li class="step"><span class="n">iii.</span><h3>Build &amp; updates</h3><p>You see progress every week and can give feedback early.</p></li>
-        <li class="step"><span class="n">iv.</span><h3>Launch &amp; support</h3><p>I launch it, show you how to use it, and fix issues free for 30 days.</p></li>
-      </ol>
-    </div>
-  </section>
-
-  <!-- ================= PATH (filled from #profile-data; hidden while empty) ================= -->
-  <section class="sec" id="path" hidden>
-    <div class="wrap">
-      <header class="sec-head reveal">
-        <p class="sec-label label"><span class="num"></span>Experience &amp; education</p>
-        <h2>The path <em>so far.</em></h2>
-      </header>
-      <div class="path-grid">
-        <div data-list="experience"><span class="label">Experience</span><ul class="timeline"></ul></div>
-        <div data-list="education"><span class="label">Education</span><ul class="timeline"></ul></div>
-      </div>
-      <div class="awards" data-list="achievements"></div>
-      <div class="certs" data-list="certifications"><span class="label">Certifications</span><ul class="chips"></ul></div>
-    </div>
-  </section>
-
-  <!-- ================= FAQ ================= -->
-  <section class="sec" id="faq">
-    <div class="wrap">
-      <header class="sec-head reveal">
-        <p class="sec-label label"><span class="num"></span>FAQ</p>
-        <h2>Questions clients <em>usually ask.</em></h2>
-      </header>
-      <div class="faq reveal">
-        <details><summary>How much does a website cost?</summary><p>It depends on size and features. After a quick call I send a fixed-price quote, so you know the full cost before any work starts. Small fixes and one-page sites are quick and affordable.</p></details>
-        <details><summary>How long does it take?</summary><p>A landing page usually takes about a week, a full business website 2–3 weeks, and stores or custom apps 3–6 weeks depending on features.</p></details>
-        <details><summary>Do you work with clients in other countries?</summary><p>Yes. I work remotely with clients anywhere over email, video calls and WhatsApp, and I adjust my hours for meetings in your time zone.</p></details>
-        <details><summary>What do I need to provide?</summary><p>Your logo, text and photos if you have them. If not, I can help write the copy, source quality stock images, and set up your domain and hosting.</p></details>
-        <details><summary>Are you open to full-time roles?</summary><p>Yes. Alongside freelance work I'm open to full-time and contract developer roles. Send me the details by email.</p></details>
-      </div>
-    </div>
-  </section>
-
-  <!-- ================= CONTACT ================= -->
-  <section class="sec contact" id="contact">
-    <div class="wrap">
-      <header class="sec-head reveal" style="margin-bottom:40px">
-        <p class="sec-label label"><span class="num"></span>Contact</p>
-      </header>
-      <div class="contact-grid">
-        <div class="reveal">
-          <h2>Let's build<br>something<br><em>worth launching.</em></h2>
-          <p class="sub">Have a project, a role or just an idea? My inbox and WhatsApp are open, and I reply within 24 hours.</p>
-        </div>
-        <div class="reach reveal">
-          <div class="reach-row">
-            <div><span class="label">Email</span><strong><a href="mailto:bhargav.angadi@gmail.com" style="text-decoration:none">bhargav.angadi@gmail.com</a></strong></div>
-            <button class="copy" type="button" data-copy="bhargav.angadi@gmail.com">Copy email</button>
-          </div>
-          <a class="reach-row" href="https://wa.me/917411946909?text=Hi%20Bhargav%2C%20I%27d%20like%20to%20discuss%20a%20project." data-nod target="_blank" rel="noopener noreferrer">
-            <div><span class="label">WhatsApp</span><strong>+91 74119 46909</strong></div><span class="arrow">↗</span>
-          </a>
-          <a class="reach-row" href="https://github.com/bhargavang" target="_blank" rel="noopener noreferrer">
-            <div><span class="label">GitHub</span><strong>@bhargavang</strong></div><span class="arrow">↗</span>
-          </a>
-          <a class="reach-row" href="https://www.linkedin.com/in/bhargavangadi/" target="_blank" rel="noopener noreferrer">
-            <div><span class="label">LinkedIn</span><strong>bhargavangadi</strong></div><span class="arrow">↗</span>
-          </a>
-        </div>
-      </div>
+      <ul class="elsewhere reveal">
+        <li><a href="https://wa.me/917411946909?text=Hi%20Bhargav%2C%20I%27d%20like%20to%20discuss%20a%20project." target="_blank" rel="noopener noreferrer">WhatsApp +91 74119 46909</a></li>
+        <li><a href="https://www.linkedin.com/in/bhargavangadi/" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+        <li><a href="https://github.com/bhargavang" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+      </ul>
     </div>
   </section>
 </main>
 
-<footer class="footer">
-  <div class="wrap footer-inner label">
-    <span>© <span id="year">2026</span> Bhargav Angadi · Designed &amp; built by hand</span>
-    <a href="#top">Back to top ↑</a>
+<footer class="foot">
+  <div class="wrap">
+    <span>© <span id="year">2026</span> Bhargav Angadi · Designed and built by hand</span>
+    <a href="#main">Back to top ↑</a>
   </div>
 </footer>
 
-<!-- EDIT: add your real details here. Any list with items makes the "Path" section appear.
-  Example entries:
-  "experience":     [{ "when": "2025 – Present", "title": "Freelance Web Developer", "org": "Self-employed · Remote", "points": ["Built ...", "Shipped ..."] }]
-  "education":      [{ "when": "2021 – 2025", "title": "B.Tech, Computer Science", "org": "Your College · City", "points": ["CGPA ..."] }]
-  "achievements":   [{ "big": "Top 10", "title": "Hackathon name", "text": "What you built." }]
-  "certifications": [{ "issuer": "Oracle", "name": "Java Foundations Associate" }]
--->
-<script type="application/json" id="profile-data">
-{
-  "experience": [],
-  "education": [],
-  "achievements": [],
-  "certifications": []
-}
-</script>
-
-<script>
-  (function () {
-    var root = document.documentElement;
-
-    // Nav border once you scroll
-    var nav = document.querySelector('.nav');
-    function onScroll() { nav.classList.toggle('scrolled', window.scrollY > 8); }
-    onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
-
-    document.getElementById('year').textContent = new Date().getFullYear();
-
-    // CareDesk slot grid (drawn here to keep the HTML short)
-    var slots = document.getElementById('slots');
-    if (slots) {
-      var times = ['09:00', '10:00', '11:00', '12:00', '14:00'];
-      var booked = { '0,1': 1, '0,3': 1, '1,0': 1, '1,2': 1, '2,4': 1, '3,0': 1, '3,3': 1, '4,1': 1, '4,4': 1 };
-      var ns = 'http://www.w3.org/2000/svg', svg = '';
-      for (var c = 0; c < 5; c++) {
-        for (var r = 0; r < 5; r++) {
-          if (c === 2 && r === 2) continue; // the animated slot
-          var x = 34 + c * 84, y = 90 + r * 48, isB = booked[c + ',' + r];
-          svg += '<rect x="' + x + '" y="' + y + '" width="76" height="40" rx="9" fill="' + (isB ? 'rgba(200,164,101,.1)' : 'none') + '" stroke="' + (isB ? 'rgba(200,164,101,.45)' : '#262a31') + '"/>';
-          svg += '<text x="' + (x + 38) + '" y="' + (y + 24) + '" fill="' + (isB ? '#c8a465' : '#55565b') + '">' + (isB ? 'booked' : times[r]) + '</text>';
-        }
-      }
-      slots.innerHTML = svg;
-    }
-
-    // Copy email
-    document.querySelectorAll('[data-copy]').forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        var text = btn.getAttribute('data-copy');
-        var done = function () { btn.textContent = 'Copied ✓'; setTimeout(function () { btn.textContent = 'Copy email'; }, 1800); };
-        if (navigator.clipboard) navigator.clipboard.writeText(text).then(done, function () { window.prompt('Copy this email:', text); });
-        else window.prompt('Copy this email:', text);
-      });
-    });
-
-    // Path section from JSON
-    try {
-      var data = JSON.parse(document.getElementById('profile-data').textContent);
-      var esc = function (s) { return String(s).replace(/[&<>"]/g, function (m) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[m]; }); };
-      var any = false;
-      ['experience', 'education'].forEach(function (key) {
-        var items = data[key] || [], box = document.querySelector('[data-list="' + key + '"]');
-        if (!items.length) { box.hidden = true; return; }
-        any = true;
-        box.querySelector('ul').innerHTML = items.map(function (i) {
-          return '<li><span class="label">' + esc(i.when || '') + '</span><h3>' + esc(i.title || '') + '</h3><div class="org">' + esc(i.org || '') + '</div>' +
-            ((i.points || []).length ? '<ul>' + i.points.map(function (p) { return '<li>' + esc(p) + '</li>'; }).join('') + '</ul>' : '') + '</li>';
-        }).join('');
-      });
-      var ach = data.achievements || [], achBox = document.querySelector('[data-list="achievements"]');
-      if (ach.length) { any = true; achBox.innerHTML = ach.map(function (a) { return '<article class="award"><b>' + esc(a.big || '') + '</b><h3>' + esc(a.title || '') + '</h3><p>' + esc(a.text || '') + '</p></article>'; }).join(''); }
-      else achBox.hidden = true;
-      var certs = data.certifications || [], certBox = document.querySelector('[data-list="certifications"]');
-      if (certs.length) { any = true; certBox.querySelector('ul').innerHTML = certs.map(function (c) { return '<li><i>' + esc(c.issuer || '') + '</i>' + esc(c.name || '') + '</li>'; }).join(''); }
-      else certBox.hidden = true;
-      if (any) document.getElementById('path').hidden = false;
-    } catch (e) { /* bad JSON: keep the section hidden */ }
-
-    // Gentle reveal on scroll
-    if ('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      root.classList.add('js-reveal');
-      var io = new IntersectionObserver(function (entries) {
-        entries.forEach(function (en) { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
-      }, { rootMargin: '0px 0px -8% 0px' });
-      document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
-    }
-  })();
-</script>
-
-<!-- 3D avatar in the hero arch (three.js), built in code: no model file to download.
-     Falls back to a "BA" monogram if WebGL isn't available. -->
-<script type="importmap">
-  {
-    "imports": {
-      "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
-      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
-    }
-  }
-</script>
-<script type="module">
-  import * as THREE from 'three';
-  import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
-
-  // Bhargav's 3D avatar in a soft, Memoji-like style, built entirely in code
-  // (no model file to download). Change these values to restyle him.
-  const LOOK = {
-    skin: 0xf0c3a0,     // fair
-    hair: 0x1c1410,     // black, wavy
-    beardColor: 0x2a1f19,
-    tshirt: 0xf6f4f0,   // white tee
-    jacket: 0x2b2e35,   // charcoal bomber jacket
-    gold: 0xc8a465,     // glasses, zip lines, badge
-    beard: true,        // light trimmed beard
-    glasses: true,      // gold round glasses
-    smile: true,        // friendly smile
-  };
-
-  const arch = document.querySelector('.arch');
-  const canvas = arch && arch.querySelector('canvas');
-  const hero = document.querySelector('.hero');
-  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const fail = () => arch.classList.add('failed');
-
-  function dotTexture() {
-    const c = document.createElement('canvas');
-    c.width = c.height = 64;
-    const g = c.getContext('2d');
-    const grd = g.createRadialGradient(32, 32, 0, 32, 32, 32);
-    grd.addColorStop(0, 'rgba(255,255,255,1)');
-    grd.addColorStop(0.4, 'rgba(255,255,255,.45)');
-    grd.addColorStop(1, 'rgba(255,255,255,0)');
-    g.fillStyle = grd;
-    g.fillRect(0, 0, 64, 64);
-    return new THREE.CanvasTexture(c);
-  }
-
-  // A slowly turning halo of gold-to-steel particles behind the avatar
-  function makeHalo() {
-    const count = 1800, pos = new Float32Array(count * 3), col = new Float32Array(count * 3);
-    const gold = new THREE.Color('#e3c78f'), steel = new THREE.Color('#5d6f86');
-    for (let i = 0; i < count; i++) {
-      const r = 0.42 + Math.pow(Math.random(), 0.8) * 0.62;
-      const a = ((i % 3) / 3) * Math.PI * 2 + r * 3.2 + (Math.random() - 0.5) * 0.5;
-      pos[i * 3] = Math.cos(a) * r;
-      pos[i * 3 + 1] = Math.sin(a) * r;
-      pos[i * 3 + 2] = (Math.random() - 0.5) * 0.08;
-      const c = gold.clone().lerp(steel, (r - 0.42) / 0.62);
-      col[i * 3] = c.r; col[i * 3 + 1] = c.g; col[i * 3 + 2] = c.b;
-    }
-    const geo = new THREE.BufferGeometry();
-    geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-    geo.setAttribute('color', new THREE.BufferAttribute(col, 3));
-    return new THREE.Points(geo, new THREE.PointsMaterial({
-      size: 0.026, vertexColors: true, map: dotTexture(), transparent: true, opacity: 1,
-      depthWrite: false, blending: THREE.AdditiveBlending,
-    }));
-  }
-
-  // Fine gold dust drifting upward
-  function makeDust() {
-    const count = 220, pos = new Float32Array(count * 3);
-    for (let i = 0; i < count; i++) {
-      pos[i * 3] = (Math.random() - 0.5) * 1.8;
-      pos[i * 3 + 1] = 0.6 + Math.random() * 1.9;
-      pos[i * 3 + 2] = (Math.random() - 0.5) * 1.2 - 0.3;
-    }
-    const geo = new THREE.BufferGeometry();
-    geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-    return new THREE.Points(geo, new THREE.PointsMaterial({
-      size: 0.012, color: '#e3c78f', map: dotTexture(), transparent: true, opacity: 0.55,
-      depthWrite: false, blending: THREE.AdditiveBlending,
-    }));
-  }
-
-  // ---------- Avatar geometry helpers
-  const HS = 0.5; // head size
-  // Unit sphere -> soft, rounded Memoji-style head: gentle jaw, slightly flatter face
-  function headDeform(v) {
-    if (v.y < 0) { const k = Math.pow(-v.y, 1.6); v.x *= 1 - 0.2 * k; v.z *= 1 - 0.1 * k; }
-    if (v.z > 0.6) v.z = 0.6 + (v.z - 0.6) * 0.8;
-    v.y *= 1.08;
-    return v;
-  }
-  function shapedSphere(seg, phiStart, phiLength, thetaStart, thetaLength) {
-    const g = new THREE.SphereGeometry(1, seg, Math.round(seg * 0.66), phiStart, phiLength, thetaStart, thetaLength);
-    const p = g.attributes.position, v = new THREE.Vector3();
-    for (let i = 0; i < p.count; i++) { v.fromBufferAttribute(p, i); headDeform(v); p.setXYZ(i, v.x, v.y, v.z); }
-    g.computeVertexNormals();
-    return g;
-  }
-  const smoothstep = (a, b, x) => { const t = Math.min(1, Math.max(0, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
-
-  function buildAvatar() {
-    const M = {
-      skin: new THREE.MeshPhysicalMaterial({ color: LOOK.skin, roughness: 0.5, sheen: 0.5, sheenColor: new THREE.Color(0xffcbb5), sheenRoughness: 0.5, clearcoat: 0.1, clearcoatRoughness: 0.6 }),
-      blush: new THREE.MeshStandardMaterial({ color: 0xf09a86, roughness: 0.8, transparent: true, opacity: 0.22, depthWrite: false }),
-      hair: new THREE.MeshPhysicalMaterial({ color: LOOK.hair, roughness: 0.38, sheen: 0.9, sheenColor: new THREE.Color(0x7a6352), sheenRoughness: 0.3, clearcoat: 0.25, clearcoatRoughness: 0.4 }),
-      stache: new THREE.MeshStandardMaterial({ color: LOOK.beardColor, roughness: 0.9, transparent: true, opacity: 0.9 }),
-      tshirt: new THREE.MeshPhysicalMaterial({ color: LOOK.tshirt, roughness: 0.9, sheen: 0.6, sheenColor: new THREE.Color(0xffffff), sheenRoughness: 0.7 }),
-      rib: new THREE.MeshStandardMaterial({ color: 0xe7e3dc, roughness: 0.9 }),
-      jacket: new THREE.MeshPhysicalMaterial({ color: LOOK.jacket, roughness: 0.55, sheen: 0.6, sheenColor: new THREE.Color(0x8a93a3), sheenRoughness: 0.5, side: THREE.DoubleSide }),
-      jacketRib: new THREE.MeshStandardMaterial({ color: 0x3a3e46, roughness: 0.85 }),
-      gold: new THREE.MeshStandardMaterial({ color: LOOK.gold, roughness: 0.28, metalness: 0.9 }),
-      eyeWhite: new THREE.MeshStandardMaterial({ color: 0xfbfaf8, roughness: 0.2 }),
-      iris: new THREE.MeshStandardMaterial({ color: 0x5b3a22, roughness: 0.25 }),
-      pupil: new THREE.MeshBasicMaterial({ color: 0x0b0807 }),
-      shine: new THREE.MeshBasicMaterial({ color: 0xffffff }),
-      lash: new THREE.MeshStandardMaterial({ color: 0x15100c, roughness: 0.7 }),
-      mouth: new THREE.MeshStandardMaterial({ color: 0x5a2320, roughness: 0.6, side: THREE.DoubleSide }),
-      teeth: new THREE.MeshStandardMaterial({ color: 0xfbf8f2, roughness: 0.4, side: THREE.DoubleSide }),
-      lip: new THREE.MeshStandardMaterial({ color: 0xd98d7f, roughness: 0.5, side: THREE.DoubleSide }),
-      lens: new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.05, transparent: true, opacity: 0.08, depthWrite: false }),
-    };
-    const SPH = new THREE.SphereGeometry(1, 48, 32);
-    const mesh = (geo, mat, pos, scale, rot) => {
-      const m = new THREE.Mesh(geo, mat);
-      if (pos) m.position.set(pos[0], pos[1], pos[2]);
-      if (scale) m.scale.set(scale[0], scale[1], scale[2]);
-      if (rot) m.rotation.set(rot[0], rot[1], rot[2]);
-      return m;
-    };
-    const tube = (pts, r, mat) => new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts.map((p) => new THREE.Vector3(...p))), 32, r, 10, false), mat);
-    const bend = (geo, k) => { // curve a flat shape so it hugs the face
-      const p = geo.attributes.position;
-      for (let i = 0; i < p.count; i++) p.setZ(i, p.getZ(i) - k * p.getX(i) * p.getX(i));
-      geo.computeVertexNormals();
-      return geo;
-    };
-
-    const avatar = new THREE.Group();
-
-    // ----- Body: white tee under a charcoal bomber jacket
-    const body = new THREE.Group();
-    avatar.add(body);
-    body.add(mesh(new THREE.CylinderGeometry(0.13, 0.15, 0.26, 40), M.skin, [0, 1.13, -0.01]));
-    const profile = [[0, 1.02], [0.15, 1.02], [0.21, 1.005], [0.36, 0.965], [0.48, 0.9], [0.56, 0.79], [0.6, 0.64], [0.62, 0.42], [0.62, 0.1]];
-    const prof = profile.map(([x, y]) => new THREE.Vector2(x, y));
-    body.add(mesh(new THREE.LatheGeometry(prof.map((v) => new THREE.Vector2(v.x * 0.985, v.y)), 96), M.tshirt, null, [1, 1, 0.62]));
-    body.add(mesh(new THREE.TorusGeometry(0.152, 0.018, 16, 48), M.rib, [0, 1.022, 0.005], null, [Math.PI / 2, 0, 0]));
-    const gap = 0.42; // jacket worn open at the front
-    body.add(mesh(new THREE.LatheGeometry(prof, 96, gap, Math.PI * 2 - gap * 2), M.jacket, null, [1, 1, 0.62]));
-    body.add(mesh(new THREE.TorusGeometry(0.205, 0.04, 16, 64, Math.PI * 2 - 1.0), M.jacketRib, [0, 1.03, -0.005], [1, 1, 0.8], [-Math.PI / 2, 0, Math.PI * 1.5 + 0.5]));
-    [-1, 1].forEach((s) => { // gold zip lines along the open jacket edges
-      const pts = profile.filter(([r]) => r >= 0.2).map(([r, y]) => [s * r * Math.sin(gap), y, 0.62 * r * Math.cos(gap) + 0.004]);
-      body.add(tube(pts, 0.007, M.gold));
-    });
-    body.add(mesh(new THREE.TorusGeometry(0.026, 0.006, 12, 40), M.gold, [0.28, 0.76, 0.302], null, [0, 0.5, 0]));
-
-    // ----- Head on a pivot at the top of the neck (turns and nods)
-    const headPivot = new THREE.Group();
-    headPivot.position.set(0, 1.24, 0);
-    avatar.add(headPivot);
-    const head = new THREE.Group();
-    head.position.set(0, 0.44, 0);
-    headPivot.add(head);
-
-    head.add(mesh(shapedSphere(112, 0, Math.PI * 2, 0, Math.PI), M.skin, null, [HS, HS, HS]));
-    [-1, 1].forEach((s) => {
-      head.add(mesh(SPH, M.skin, [s * 0.49, 0, -0.02], [0.06, 0.11, 0.075], [0, s * 0.3, 0]));
-      head.add(mesh(SPH, M.blush, [s * 0.25, -0.09, 0.4], [0.075, 0.045, 0.02]));
-    });
-
-    // nose: small and rounded
-    head.add(mesh(SPH, M.skin, [0, -0.005, 0.45], [0.03, 0.07, 0.03]));
-    head.add(mesh(SPH, M.skin, [0, -0.075, 0.468], [0.052, 0.042, 0.045]));
-    [-1, 1].forEach((s) => head.add(mesh(SPH, M.skin, [s * 0.04, -0.088, 0.448], [0.028, 0.024, 0.026])));
-
-    // big expressive eyes with relaxed upper lids
-    const eyes = [], lids = [];
-    [-1, 1].forEach((s) => {
-      const eye = new THREE.Group();
-      eye.position.set(s * 0.168, 0.035, 0.365);
-      eye.add(mesh(new THREE.SphereGeometry(0.08, 40, 28), M.eyeWhite));
-      eye.add(mesh(new THREE.SphereGeometry(0.0808, 40, 16, 0, Math.PI * 2, 0, 0.66), M.iris, null, null, [Math.PI / 2, 0, 0]));
-      eye.add(mesh(new THREE.SphereGeometry(0.0814, 32, 8, 0, Math.PI * 2, 0, 0.3), M.pupil, null, null, [Math.PI / 2, 0, 0]));
-      eye.add(mesh(new THREE.SphereGeometry(0.011, 12, 8), M.shine, [0.022, 0.026, 0.074]));
-      eye.add(mesh(new THREE.SphereGeometry(0.006, 10, 6), M.shine, [-0.016, -0.02, 0.077]));
-      head.add(eye);
-      eyes.push(eye);
-      const lid = new THREE.Group();
-      lid.position.copy(eye.position);
-      lid.add(mesh(new THREE.SphereGeometry(0.086, 40, 16, 0, Math.PI * 2, 0, 1.05), M.skin));
-      lid.add(mesh(new THREE.TorusGeometry(0.086 * Math.sin(1.05), 0.0065, 8, 48), M.lash, [0, 0.086 * Math.cos(1.05), 0], null, [Math.PI / 2, 0, 0]));
-      head.add(lid);
-      lids.push(lid);
-      // soft, thick eyebrows
-      const brow = [[0.085, 0.18, 0.448], [0.165, 0.2, 0.428], [0.245, 0.176, 0.398]].map(([x, y, z]) => [s * x, y, z]);
-      head.add(tube(brow, 0.021, M.hair));
-      [brow[0], brow[2]].forEach((p) => head.add(mesh(new THREE.SphereGeometry(0.021, 12, 8), M.hair, p)));
-    });
-
-    // friendly smile, curved to follow the face
-    if (LOOK.smile) {
-      const smile = new THREE.Shape();
-      smile.moveTo(-0.1, 0);
-      smile.quadraticCurveTo(0, -0.02, 0.1, 0);
-      smile.quadraticCurveTo(0, -0.13, -0.1, 0);
-      const teeth = new THREE.Shape();
-      teeth.moveTo(-0.078, -0.01);
-      teeth.quadraticCurveTo(0, -0.028, 0.078, -0.01);
-      teeth.lineTo(0.068, -0.03);
-      teeth.quadraticCurveTo(0, -0.05, -0.068, -0.03);
-      teeth.closePath();
-      const lip = new THREE.Shape();
-      lip.moveTo(-0.06, -0.058);
-      lip.quadraticCurveTo(0, -0.1, 0.06, -0.058);
-      lip.quadraticCurveTo(0, -0.08, -0.06, -0.058);
-      head.add(mesh(bend(new THREE.ShapeGeometry(smile, 24), 1.6), M.mouth, [0, -0.2, 0.437], null, [-0.2, 0, 0]));
-      head.add(mesh(bend(new THREE.ShapeGeometry(teeth, 24), 1.6), M.teeth, [0, -0.2, 0.439], null, [-0.2, 0, 0]));
-      head.add(mesh(bend(new THREE.ShapeGeometry(lip, 24), 1.6), M.lip, [0, -0.2, 0.436], null, [-0.2, 0, 0]));
-    } else {
-      head.add(tube([[-0.07, -0.2, 0.43], [0, -0.215, 0.44], [0.07, -0.2, 0.43]], 0.01, M.mouth));
-    }
-
-    // light, neatly trimmed beard: low under the lip, rising along the jaw to the sideburns
-    if (LOOK.beard) {
-      const g = shapedSphere(112, 0, Math.PI, 1.5, Math.PI - 1.5);
-      const p = g.attributes.position, colors = new Float32Array(p.count * 4);
-      for (let i = 0; i < p.count; i++) {
-        const x = Math.abs(p.getX(i)), y = p.getY(i) / 1.08;
-        const top = -0.54 + 0.5 * Math.pow(x, 1.25); // beard top edge follows the jaw
-        const a = smoothstep(top, top - 0.06, y);
-        colors.set([1, 1, 1, 0.66 * a], i * 4);
-      }
-      g.setAttribute('color', new THREE.BufferAttribute(colors, 4));
-      head.add(mesh(g, new THREE.MeshStandardMaterial({ color: LOOK.beardColor, roughness: 0.9, vertexColors: true, transparent: true, depthWrite: false }), null, [HS * 1.02, HS * 1.02, HS * 1.02]));
-      head.add(tube([[-0.09, -0.165, 0.44], [-0.035, -0.15, 0.458], [0, -0.155, 0.462], [0.035, -0.15, 0.458], [0.09, -0.165, 0.44]], 0.016, M.stache));
-    }
-
-    // glossy, sculpted wavy hair with a clean hairline
-    const capGeo = new THREE.SphereGeometry(1, 112, 72);
-    {
-      const p = capGeo.attributes.position, v = new THREE.Vector3();
-      for (let i = 0; i < p.count; i++) {
-        v.fromBufferAttribute(p, i);
-        const flat = Math.hypot(v.x, v.z) || 1;
-        const front = Math.max(0, v.z / flat), back = Math.max(0, -v.z / flat);
-        const limit = 1.45 + 0.5 * back - 0.62 * Math.pow(front, 1.3);
-        let theta = Math.acos(Math.max(-1, Math.min(1, v.y)));
-        if (theta > limit) {
-          theta = limit;
-          const phi = Math.atan2(v.z, v.x);
-          v.set(Math.cos(phi) * Math.sin(theta), Math.cos(theta), Math.sin(phi) * Math.sin(theta));
-        }
-        headDeform(v);
-        const a = Math.atan2(v.z, v.x);
-        v.multiplyScalar(1 + 0.02 * Math.sin(a * 7 + v.y * 4) * Math.max(0, Math.min(1, (v.y + 0.2) * 1.5)));
-        p.setXYZ(i, v.x, v.y, v.z);
-      }
-      capGeo.computeVertexNormals();
-    }
-    head.add(mesh(capGeo, M.hair, [0, 0.012, -0.01], [HS * 1.04, HS * 1.04, HS * 1.04]));
-    const waves = [
-      [0.0, 0.47, 0.05, 0.34, 0.15, 0.36, -0.15, 0, 0],
-      [-0.2, 0.42, 0.22, 0.2, 0.11, 0.16, -0.5, 0, 0.4],
-      [0.04, 0.47, 0.27, 0.21, 0.11, 0.15, -0.6, 0, 0.05],
-      [0.25, 0.41, 0.2, 0.18, 0.1, 0.15, -0.5, 0, -0.45],
-      [-0.36, 0.28, 0.06, 0.13, 0.14, 0.17, -0.2, 0, 0.6],
-      [0.37, 0.27, 0.04, 0.13, 0.14, 0.17, -0.2, 0, -0.6],
-      [0, 0.36, -0.3, 0.32, 0.16, 0.2, 0.3, 0, 0],
-    ];
-    waves.forEach(([x, y, z, sx, sy, sz, rx, ry, rz]) => head.add(mesh(SPH, M.hair, [x, y, z], [sx, sy, sz], [rx, ry, rz])));
-    [-1, 1].forEach((s) => head.add(mesh(SPH, M.hair, [s * 0.475, 0.06, 0.08], [0.035, 0.11, 0.06])));
-
-    // gold round glasses
-    if (LOOK.glasses) {
-      [-1, 1].forEach((s) => {
-        head.add(mesh(new THREE.TorusGeometry(0.092, 0.0095, 14, 64), M.gold, [s * 0.168, 0.035, 0.47], [1.08, 1, 1]));
-        head.add(mesh(new THREE.CircleGeometry(0.09, 48), M.lens, [s * 0.168, 0.035, 0.469], [1.08, 1, 1]));
-        head.add(tube([[s * 0.265, 0.05, 0.452], [s * 0.39, 0.05, 0.33], [s * 0.445, 0.045, 0.12]], 0.0065, M.gold));
-      });
-      head.add(tube([[-0.07, 0.05, 0.476], [0, 0.07, 0.484], [0.07, 0.05, 0.476]], 0.008, M.gold));
-    }
-
-    return { avatar, body, headPivot, eyes, lids };
-  }
-
-  function init() {
-    let renderer;
-    try {
-      renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-    } catch (e) { fail(); return; }
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.08;
-
-    const scene = new THREE.Scene();
-    const pmrem = new THREE.PMREMGenerator(renderer);
-    scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
-
-    // Portrait framing: head and shoulders, like a photo in the arch
-    const camera = new THREE.PerspectiveCamera(30, 1, 0.1, 50);
-    camera.position.set(0, 1.6, 3.35);
-    camera.lookAt(0, 1.52, 0);
-
-    scene.add(new THREE.HemisphereLight(0xfff6ea, 0x1a1b20, 0.6));
-    const key = new THREE.DirectionalLight(0xfff2e2, 1.85);
-    key.position.set(1.2, 2.6, 3.0);
-    scene.add(key);
-    const fill = new THREE.DirectionalLight(0xffe9d6, 0.5);
-    fill.position.set(-2, 1.2, 2.5);
-    scene.add(fill);
-    const rim = new THREE.DirectionalLight(0x9db4d8, 2.0);
-    rim.position.set(-2.2, 2.6, -2.4);
-    scene.add(rim);
-
-    const halo = makeHalo();
-    halo.position.set(0, 1.7, -0.75);
-    halo.scale.setScalar(0.92);
-    scene.add(halo);
-    const dust = makeDust();
-    scene.add(dust);
-
-    const { avatar, body, headPivot, eyes, lids } = buildAvatar();
-    scene.add(avatar);
-    arch.classList.add('ready');
-
-    // If portfolio/avatar.png exists (for example a rendered 3D avatar with a transparent
-    // background), show it instead of the code-built avatar. The halo, float, tilt and nod stay.
-    let photo = null;
-    const img = new Image();
-    img.className = 'arch-photo';
-    img.alt = '3D avatar of Bhargav Angadi';
-    img.onload = () => { photo = img; arch.appendChild(img); avatar.visible = false; };
-    img.onerror = () => { if (!img.src.endsWith('.png')) img.src = 'avatar.png'; };
-    img.src = 'avatar.webp';
-
-    const pointer = { x: 0, y: 0, tx: 0, ty: 0 };
-    const resize = () => {
-      const w = arch.clientWidth, h = arch.clientHeight;
-      if (!w || !h) return;
-      renderer.setSize(w, h, false);
-      camera.aspect = w / h;
-      camera.updateProjectionMatrix();
-    };
-    new ResizeObserver(resize).observe(arch);
-    resize();
-
-    hero.addEventListener('pointermove', (e) => {
-      if (e.pointerType !== 'mouse') return;
-      const r = arch.getBoundingClientRect();
-      pointer.tx = Math.max(-1, Math.min(1, (e.clientX - (r.left + r.width / 2)) / (r.width * 1.2)));
-      pointer.ty = Math.max(-1, Math.min(1, -(e.clientY - (r.top + r.height * 0.3)) / r.height));
-    });
-    hero.addEventListener('pointerleave', () => { pointer.tx = 0; pointer.ty = 0; });
-
-    // A friendly nod: on load, when "Hire me" / "Get a free quote" is hovered, and on click
-    const clock = new THREE.Clock();
-    let nodStart = -10, blinkStart = -10, nextBlink = 1.5;
-    const nod = () => { if (clock.elapsedTime - nodStart > 1.6) nodStart = clock.elapsedTime; };
-    document.querySelectorAll('[data-nod]').forEach((el) => {
-      el.addEventListener('mouseenter', nod);
-      el.addEventListener('focus', nod);
-    });
-    arch.addEventListener('click', nod);
-    setTimeout(nod, 900);
-
-    let visible = false, raf = 0;
-    const frame = () => {
-      const dt = Math.min(clock.getDelta(), 0.05);
-      const now = clock.elapsedTime;
-      const t = reduce ? now * 0.2 : now;
-      pointer.x += (pointer.tx - pointer.x) * 0.08;
-      pointer.y += (pointer.ty - pointer.y) * 0.08;
-
-      const np = (now - nodStart) / 1.1;
-      const nodOffset = np >= 0 && np < 1 ? Math.sin(np * Math.PI * 2) * 0.13 * (1 - np) : 0;
-      headPivot.rotation.set(-pointer.y * 0.16 + Math.max(0, nodOffset), pointer.x * 0.38, -pointer.x * 0.04);
-      body.rotation.y = pointer.x * 0.12;
-      avatar.position.y = Math.sin(t * 1.5) * 0.006; // breathing
-
-      // eyes follow the cursor; lids blink every few seconds
-      if (now > nextBlink) { blinkStart = now; nextBlink = now + 2.5 + Math.random() * 3; }
-      const bp = (now - blinkStart) / 0.18;
-      const close = bp >= 0 && bp < 1 ? Math.sin(bp * Math.PI) : 0;
-      eyes.forEach((e) => e.rotation.set(-pointer.y * 0.25, pointer.x * 0.35, 0));
-      lids.forEach((l) => { l.rotation.x = -0.3 + close * 1.65 - pointer.y * 0.05; });
-      if (photo) {
-        const lift = (Math.sin(t * 1.5) * 4).toFixed(2);
-        const tiltX = (-pointer.y * 6 + Math.max(0, nodOffset) * 40).toFixed(2);
-        photo.style.transform = `translateX(-50%) translateY(${lift}px) perspective(900px) rotateY(${(pointer.x * 10).toFixed(2)}deg) rotateX(${tiltX}deg)`;
-      }
-
-      halo.rotation.z = -t * 0.12;
-      const p = dust.geometry.attributes.position;
-      for (let i = 0; i < p.count; i++) {
-        let y = p.getY(i) + dt * (reduce ? 0.01 : 0.05);
-        if (y > 2.5) y = 0.6;
-        p.setY(i, y);
-      }
-      p.needsUpdate = true;
-
-      renderer.render(scene, camera);
-      raf = visible ? requestAnimationFrame(frame) : 0;
-    };
-    new IntersectionObserver(([entry]) => {
-      visible = entry.isIntersecting;
-      if (visible && !raf) { clock.getDelta(); raf = requestAnimationFrame(frame); }
-    }).observe(arch);
-    renderer.render(scene, camera);
-  }
-
-  if (arch && canvas) init();
-</script>
+<script src="main.js" defer></script>
 </body>
 </html>

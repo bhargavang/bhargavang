@@ -8,7 +8,7 @@
  * To change anything (projects, links, wording), edit CONFIG below and re-run.
  * Don't edit README.md or assets/*.svg by hand; they are overwritten on every build.
  */
-import { copyFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { copyFileSync, cpSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -734,10 +734,14 @@ writeFileSync(join(ROOT, 'preview.html'), preview(md));
 mkdirSync(join(ROOT, 'site'), { recursive: true });
 writeFileSync(join(ROOT, 'site', '.nojekyll'), '');
 if (existsSync(CONFIG.portfolioSource)) {
+  const from = dirname(CONFIG.portfolioSource);
   copyFileSync(CONFIG.portfolioSource, join(ROOT, 'site', 'index.html'));
-  for (const f of ['avatar.webp', 'avatar.png']) { // the hero avatar image, if you have one
-    const src = join(dirname(CONFIG.portfolioSource), f);
-    if (existsSync(src)) copyFileSync(src, join(ROOT, 'site', f));
+  for (const f of ['main.js', 'og.jpg']) { // the page's script and its link-preview image
+    if (existsSync(join(from, f))) copyFileSync(join(from, f), join(ROOT, 'site', f));
+  }
+  if (existsSync(join(from, 'img'))) { // project screenshots and the avatar; replaced as a whole
+    rmSync(join(ROOT, 'site', 'img'), { recursive: true, force: true });
+    cpSync(join(from, 'img'), join(ROOT, 'site', 'img'), { recursive: true });
   }
 } else console.warn(`! Portfolio not found at ${CONFIG.portfolioSource}; site/ left as is.`);
 
