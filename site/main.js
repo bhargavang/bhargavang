@@ -1,6 +1,8 @@
 // Small enhancements only: the page reads fine without this file.
 (function () {
   var root = document.documentElement;
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var canWatch = 'IntersectionObserver' in window;
 
   var year = document.getElementById('year');
   if (year) year.textContent = new Date().getFullYear();
@@ -22,8 +24,27 @@
     });
   });
 
+  // Project recordings play while they're on screen and pause when they leave it.
+  // Without JS, or with reduced motion, they keep their play controls instead.
+  var videos = document.querySelectorAll('.screen video');
+  if (videos.length && canWatch && !reduce) {
+    var vio = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        var v = entry.target;
+        if (entry.isIntersecting) {
+          v.preload = 'auto';
+          var p = v.play();
+          if (p && p.catch) p.catch(function () { v.controls = true; });
+        } else {
+          v.pause();
+        }
+      });
+    }, { threshold: 0.35 });
+    videos.forEach(function (v) { v.controls = false; vio.observe(v); });
+  }
+
   // Fade sections up once as they scroll into view
-  if (!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if (!canWatch || reduce) return;
   root.classList.add('js');
   var io = new IntersectionObserver(function (entries) {
     entries.forEach(function (entry) {

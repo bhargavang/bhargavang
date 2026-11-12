@@ -13,7 +13,7 @@
 -->
 <title>Bhargav Angadi | Websites, booking systems and web apps</title>
 <meta name="description" content="Bhargav Angadi is a software developer in India. He builds websites, booking systems and web apps for restaurants and small businesses on Java, Spring Boot and React. Open to freelance projects and full-time roles.">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; media-src 'self'; base-uri 'none'; form-action 'none'">
 <link rel="canonical" href="https://bhargavang.github.io/bhargavang/">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://bhargavang.github.io/bhargavang/">
@@ -142,18 +142,34 @@
 
   /* Work (green panel) */
   .work { background: var(--green); color: var(--on-green); }
-  .work .sec-head p, .work .project p { color: var(--on-green-muted); }
-  .projects { list-style: none; margin: 0; padding: 0; display: grid; gap: clamp(56px, 7vw, 80px) clamp(28px, 4vw, 48px); }
-  @media (min-width: 880px) { .projects { grid-template-columns: 1fr 1fr; } }
-  .shot { display: block; aspect-ratio: 16 / 10; overflow: hidden; border-radius: 16px; background: rgba(255, 255, 235, .08); box-shadow: 0 0 0 1px var(--on-green-line); }
-  .shot img { width: 100%; height: 100%; object-fit: cover; transition: transform 1s var(--ease); }
-  .project:hover .shot img { transform: scale(1.025); }
-  .p-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 16px; margin-top: 22px; }
-  .project h3 { font-family: var(--serif); font-size: 36px; line-height: 1.05; letter-spacing: -.015em; }
-  .kind { font-size: 14px; color: var(--on-green-muted); }
-  .project p { margin: 10px 0 0; max-width: 52ch; text-wrap: pretty; }
-  .project .stack { margin-top: 12px; font-size: 14px; }
-  .links { display: flex; flex-wrap: wrap; gap: 8px 24px; margin-top: 18px; }
+  .work .sec-head p, .case p { color: var(--on-green-muted); }
+
+  /* One section per project: the story on one side, the project running in a window on the other */
+  .cases { display: grid; gap: clamp(72px, 10vw, 128px); }
+  .case { display: grid; gap: 28px; align-items: center; }
+  @media (min-width: 900px) {
+    .case { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(40px, 5vw, 72px); }
+    .case:nth-child(even) { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); }
+    .case:nth-child(even) .case-copy { order: 2; }
+  }
+  .num { display: block; margin-bottom: 18px; font-size: 13px; font-weight: 500; letter-spacing: .08em; color: var(--on-green-muted); }
+  .case h3 { font-family: var(--serif); font-size: clamp(40px, 4.4vw, 56px); line-height: 1; letter-spacing: -.02em; }
+  .case p { margin: 16px 0 0; max-width: 46ch; text-wrap: pretty; }
+  .tags { list-style: none; margin: 22px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+  .tags li { padding: 5px 9px; border: 1px solid var(--on-green-line); border-radius: 6px; font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--on-green-muted); }
+
+  .window { margin: 0; overflow: hidden; border-radius: 14px; background: #0c2f2a; box-shadow: 0 0 0 1px var(--on-green-line), 0 30px 60px -30px rgba(0, 0, 0, .55); }
+  .window-bar { display: flex; align-items: center; gap: 12px; height: 38px; padding: 0 14px; border-bottom: 1px solid var(--on-green-line); font-size: 12px; color: var(--on-green-muted); }
+  .window-bar .dots { display: flex; gap: 6px; flex: none; }
+  .window-bar .dots i { width: 9px; height: 9px; border-radius: 50%; background: rgba(255, 255, 235, .28); }
+  .window-bar .url { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .window-bar .how { margin-left: auto; flex: none; white-space: nowrap; }
+  .window-bar .how .dot { margin-right: 6px; }
+  .screen { display: block; aspect-ratio: 16 / 10; }
+  .screen video, .screen img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  @media (max-width: 479px) { .window-bar .url { display: none; } }
+
+  .links { display: flex; flex-wrap: wrap; gap: 8px 24px; margin-top: 24px; }
   .links a {
     font-size: 15px; font-weight: 600; text-decoration: underline;
     text-decoration-color: var(--on-green-line); text-decoration-thickness: 1px; text-underline-offset: 5px;
@@ -237,71 +253,83 @@
     <div class="wrap">
       <header class="sec-head reveal">
         <h2 id="work-title">Real builds, <em>real problems.</em></h2>
-        <p>Working demos for the kinds of businesses I build for, plus my own finance app. All the code is on GitHub.</p>
+        <p>Working demos for the kinds of businesses I build for, plus my own finance app. Watch them run, then read the code on GitHub.</p>
       </header>
 
-      <ul class="projects">
-        <li class="project reveal">
-          <a class="shot" href="https://saffron-table-one.vercel.app" target="_blank" rel="noopener noreferrer" tabindex="-1" aria-hidden="true">
-            <img src="img/saffron-table.webp" srcset="img/saffron-table-800.webp 800w, img/saffron-table.webp 1600w" sizes="(min-width: 1120px) 520px, (min-width: 880px) 46vw, 92vw" width="1600" height="1000" loading="lazy" decoding="async" alt="">
-          </a>
-          <div class="p-head">
-            <h3>Saffron Table</h3>
-            <span class="kind"><span class="dot" aria-hidden="true"></span>Live demo</span>
+      <div class="cases">
+        <article class="case reveal" aria-labelledby="p1">
+          <div class="case-copy">
+            <span class="num">01 · Restaurant website</span>
+            <h3 id="p1">Saffron Table</h3>
+            <p>A demo restaurant website with menu, gallery and online table booking. Guest and owner both get an email, and staff manage bookings from an admin page.</p>
+            <ul class="tags"><li>Next.js</li><li>TypeScript</li><li>Tailwind</li><li>PostgreSQL</li></ul>
+            <div class="links">
+              <a href="https://saffron-table-one.vercel.app" target="_blank" rel="noopener noreferrer">Visit the live site ↗</a>
+              <a href="https://github.com/bhargavang/saffron-table" target="_blank" rel="noopener noreferrer">Code ↗</a>
+            </div>
           </div>
-          <p>A demo restaurant website with menu, gallery and online table booking. Guest and owner both get an email, and staff manage bookings from an admin page.</p>
-          <p class="stack">Next.js · TypeScript · Tailwind · PostgreSQL</p>
-          <div class="links">
-            <a href="https://saffron-table-one.vercel.app" target="_blank" rel="noopener noreferrer">Visit the live site ↗</a>
-            <a href="https://github.com/bhargavang/saffron-table" target="_blank" rel="noopener noreferrer">Code ↗</a>
-          </div>
-        </li>
+          <figure class="window">
+            <div class="window-bar"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="url">saffron-table-one.vercel.app</span><span class="how"><span class="dot" aria-hidden="true"></span>Recorded on the live site</span></div>
+            <div class="screen">
+              <video src="video/saffron-table.mp4" poster="img/saffron-table-poster.webp" width="1280" height="800" muted loop playsinline preload="none" controls aria-label="Screen recording: scrolling the Saffron Table home page, then picking a date, party size and time on the booking page"></video>
+            </div>
+          </figure>
+        </article>
 
-        <li class="project reveal">
-          <a class="shot" href="https://github.com/bhargavang/caredesk" target="_blank" rel="noopener noreferrer" tabindex="-1" aria-hidden="true">
-            <img src="img/caredesk.webp" srcset="img/caredesk-800.webp 800w, img/caredesk.webp 1600w" sizes="(min-width: 1120px) 520px, (min-width: 880px) 46vw, 92vw" width="1600" height="1000" loading="lazy" decoding="async" alt="">
-          </a>
-          <div class="p-head">
-            <h3>CareDesk</h3>
-            <span class="kind">Booking app · clinics &amp; salons</span>
+        <article class="case reveal" aria-labelledby="p2">
+          <div class="case-copy">
+            <span class="num">02 · Booking app for clinics &amp; salons</span>
+            <h3 id="p2">CareDesk</h3>
+            <p>Customers book a free slot online and staff run the day from a dashboard. The database rules out double bookings, and reminders go out the day before.</p>
+            <ul class="tags"><li>Java</li><li>Spring Boot</li><li>React</li><li>PostgreSQL</li><li>Docker</li></ul>
+            <div class="links">
+              <a href="https://github.com/bhargavang/caredesk" target="_blank" rel="noopener noreferrer">Code ↗</a>
+            </div>
           </div>
-          <p>Customers book a free slot online and staff run the day from a dashboard. The database rules out double bookings, and reminders go out the day before.</p>
-          <p class="stack">Java · Spring Boot · React · PostgreSQL · Docker</p>
-          <div class="links">
-            <a href="https://github.com/bhargavang/caredesk" target="_blank" rel="noopener noreferrer">Code ↗</a>
-          </div>
-        </li>
+          <figure class="window">
+            <div class="window-bar"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="url">localhost · demo data</span><span class="how"><span class="dot" aria-hidden="true"></span>Recorded running locally</span></div>
+            <div class="screen">
+              <video src="video/caredesk.mp4" poster="img/caredesk-poster.webp" width="1280" height="800" muted loop playsinline preload="none" controls aria-label="Screen recording: a patient books a 10:30 am consultation in CareDesk, then the staff dashboard shows the day's appointments"></video>
+            </div>
+          </figure>
+        </article>
 
-        <li class="project reveal">
-          <a class="shot" href="https://github.com/bhargavang/kora-threads-theme" target="_blank" rel="noopener noreferrer" tabindex="-1" aria-hidden="true">
-            <img src="img/kora-threads.webp" srcset="img/kora-threads-800.webp 800w, img/kora-threads.webp 1600w" sizes="(min-width: 1120px) 520px, (min-width: 880px) 46vw, 92vw" width="1600" height="1000" loading="lazy" decoding="async" alt="">
-          </a>
-          <div class="p-head">
-            <h3>Kora Threads</h3>
-            <span class="kind">Shopify theme · clothing brand</span>
+        <article class="case reveal" aria-labelledby="p3">
+          <div class="case-copy">
+            <span class="num">03 · Shopify theme</span>
+            <h3 id="p3">Kora Threads</h3>
+            <p>A custom Shopify theme for a demo handmade clothing brand, with a size guide, fabric and care details, and an Order on WhatsApp button.</p>
+            <ul class="tags"><li>Shopify</li><li>Liquid</li><li>JavaScript</li><li>CSS</li></ul>
+            <div class="links">
+              <a href="https://github.com/bhargavang/kora-threads-theme" target="_blank" rel="noopener noreferrer">Theme code ↗</a>
+            </div>
           </div>
-          <p>A custom Shopify theme for a demo handmade clothing brand, with a size guide, fabric and care details, and an Order on WhatsApp button.</p>
-          <p class="stack">Shopify · Liquid · JavaScript · CSS</p>
-          <div class="links">
-            <a href="https://github.com/bhargavang/kora-threads-theme" target="_blank" rel="noopener noreferrer">Theme code ↗</a>
-          </div>
-        </li>
+          <figure class="window">
+            <div class="window-bar"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="url">kora-threads-theme</span><span class="how">Demo product art · no live store yet</span></div>
+            <div class="screen">
+              <img src="img/kora-threads.webp" srcset="img/kora-threads-800.webp 800w, img/kora-threads.webp 1600w" sizes="(min-width: 1120px) 600px, (min-width: 900px) 55vw, 92vw" width="1600" height="1000" loading="lazy" decoding="async" alt="The theme's demo products: kurtas, dresses, a dupatta, shirts and a jacket">
+            </div>
+          </figure>
+        </article>
 
-        <li class="project reveal">
-          <a class="shot" href="https://github.com/bhargavang/Budgetx" target="_blank" rel="noopener noreferrer" tabindex="-1" aria-hidden="true">
-            <img src="img/budgetx.webp" srcset="img/budgetx-800.webp 800w, img/budgetx.webp 1600w" sizes="(min-width: 1120px) 520px, (min-width: 880px) 46vw, 92vw" width="1600" height="1000" loading="lazy" decoding="async" alt="">
-          </a>
-          <div class="p-head">
-            <h3>BudgetX</h3>
-            <span class="kind">Personal finance app</span>
+        <article class="case reveal" aria-labelledby="p4">
+          <div class="case-copy">
+            <span class="num">04 · Personal finance app</span>
+            <h3 id="p4">BudgetX</h3>
+            <p>Track salary, EMIs and expenses and see what's safe to invest. Spring Boot microservices behind an API gateway, with an installable React app.</p>
+            <ul class="tags"><li>Java</li><li>Spring Cloud</li><li>Kafka</li><li>Redis</li><li>MySQL</li><li>React</li></ul>
+            <div class="links">
+              <a href="https://github.com/bhargavang/Budgetx" target="_blank" rel="noopener noreferrer">Code ↗</a>
+            </div>
           </div>
-          <p>Track salary, EMIs and expenses and see what's safe to invest. Spring Boot microservices behind an API gateway, with an installable React app.</p>
-          <p class="stack">Java · Spring Cloud · Kafka · Redis · MySQL · React</p>
-          <div class="links">
-            <a href="https://github.com/bhargavang/Budgetx" target="_blank" rel="noopener noreferrer">Code ↗</a>
-          </div>
-        </li>
-      </ul>
+          <figure class="window">
+            <div class="window-bar"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="url">budgetx</span><span class="how">Screenshot</span></div>
+            <div class="screen">
+              <img src="img/budgetx.webp" srcset="img/budgetx-800.webp 800w, img/budgetx.webp 1600w" sizes="(min-width: 1120px) 600px, (min-width: 900px) 55vw, 92vw" width="1600" height="1000" loading="lazy" decoding="async" alt="BudgetX dashboard on a laptop and its Today screen on a phone">
+            </div>
+          </figure>
+        </article>
+      </div>
     </div>
   </section>
 

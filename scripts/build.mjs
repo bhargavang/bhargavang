@@ -739,9 +739,10 @@ if (existsSync(CONFIG.portfolioSource)) {
   for (const f of ['main.js', 'og.jpg']) { // the page's script and its link-preview image
     if (existsSync(join(from, f))) copyFileSync(join(from, f), join(ROOT, 'site', f));
   }
-  if (existsSync(join(from, 'img'))) { // project screenshots and the avatar; replaced as a whole
-    rmSync(join(ROOT, 'site', 'img'), { recursive: true, force: true });
-    cpSync(join(from, 'img'), join(ROOT, 'site', 'img'), { recursive: true });
+  for (const dir of ['img', 'video']) { // project screenshots and screen recordings; each replaced as a whole
+    if (!existsSync(join(from, dir))) continue;
+    rmSync(join(ROOT, 'site', dir), { recursive: true, force: true });
+    cpSync(join(from, dir), join(ROOT, 'site', dir), { recursive: true });
   }
 } else console.warn(`! Portfolio not found at ${CONFIG.portfolioSource}; site/ left as is.`);
 
