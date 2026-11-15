@@ -8,7 +8,7 @@
  * To change anything (role, projects, links, wording), edit CONFIG below and re-run.
  * Don't edit README.md or assets/hero*.svg by hand; they are overwritten on every build
  * (the daily "Refresh profile stats" workflow runs this script too).
- * The README matches the portfolio: warm white, stone, charcoal and one terracotta accent.
+ * The README matches the portfolio: latte background, navy text and a brown accent.
  */
 import { copyFileSync, cpSync, existsSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
@@ -79,8 +79,8 @@ const PORTFOLIO_URL = `https://${CONFIG.user}.github.io/${CONFIG.user}/`;
 
 // ------------------------------------------------------------------ Design tokens (same as the portfolio)
 const THEMES = {
-  light: { bg: '#faf8f5', ink: '#2b2622', muted: '#6f6760', line: '#e4ddd3', panel: '#e9e3da', onPanel: '#2b2622', live: '#3f8f5a' },
-  dark: { bg: '#1c1917', ink: '#f5f1ea', muted: '#a8a097', line: '#332d28', panel: '#2a2521', onPanel: '#f5f1ea', live: '#5fbf7f' },
+  light: { bg: '#efe7dc', ink: '#22314f', muted: '#5f6577', line: '#dccfbd', panel: '#e2d5c3', onPanel: '#22314f', live: '#4f8a5b' },
+  dark: { bg: '#1b2338', ink: '#efe7dc', muted: '#a9adba', line: '#2e3852', panel: '#273150', onPanel: '#efe7dc', live: '#6fc28a' },
 };
 const SERIF = `'EB Garamond','Iowan Old Style','Palatino Linotype',Palatino,'Book Antiqua',Georgia,serif`;
 const SANS = `'Figtree',-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif`;
