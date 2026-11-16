@@ -61,10 +61,11 @@
   .brand { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; font-weight: 600; }
   .brand i { display: grid; place-items: center; width: 34px; height: 34px; border-radius: var(--r-mark); background: var(--accent); color: #fff; font-style: normal; font-size: 13px; letter-spacing: .02em; }
   .nav nav { display: flex; align-items: center; gap: clamp(16px, 3vw, 30px); }
-  .nav nav a { font-size: 14px; font-weight: 500; color: var(--muted); text-decoration: none; }
+  .nav nav a { font-size: 14px; font-weight: 500; color: var(--muted); text-decoration: none; white-space: nowrap; }
   .nav nav a:hover { color: var(--ink); }
   .nav .gh { display: inline-flex; color: var(--ink); } .nav .gh svg { width: 19px; height: 19px; }
   @media (max-width: 520px) { .nav nav a.hide-sm { display: none; } }
+  @media (max-width: 370px) { .nav .wrap { gap: 12px; } .nav nav { gap: 14px; } .brand { gap: 8px; font-size: 15px; line-height: 1.2; } }
 
   .btns { display: flex; flex-wrap: wrap; gap: 10px; }
   .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 50px; padding: 0 24px; border-radius: var(--r-btn); font: 600 15px/1 var(--sans); text-decoration: none; border: 1px solid transparent; cursor: pointer; transition: transform .3s var(--ease), box-shadow .3s var(--ease); }
