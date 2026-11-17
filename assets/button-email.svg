@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 168 50" width="168" height="50" role="img" aria-label="Email me">
+<style>.serif{font-family:'EB Garamond','Iowan Old Style','Palatino Linotype',Palatino,'Book Antiqua',Georgia,serif}.sans{font-family:'Figtree',-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif}
+
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}</style>
+<rect x="1" y="1" width="166" height="48" rx="25" fill="#22314f" stroke="#22314f" stroke-width="1.5"/>
+<text x="26" y="32" class="sans" font-size="19" font-weight="600" fill="#efe7dc">Email me  →</text>
+</svg>
