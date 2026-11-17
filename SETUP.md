@@ -25,11 +25,6 @@ git push
 
 Your site goes live at **https://bhargavang.github.io/bhargavang/**.
 
-## 3. Refresh the commit snake (one time)
-
-In the **Actions** tab, pick **Generate Snake Animation** and click **Run workflow**.
-It draws the contribution snake in GitHub's light and dark colours. After that it updates by itself every 12 hours.
-
 ## Updating later
 
 - **Profile README:** edit `CONFIG` at the top of `scripts/build.mjs`
