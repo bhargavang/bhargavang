@@ -65,7 +65,6 @@ const SERIF = `'EB Garamond','Iowan Old Style','Palatino Linotype',Palatino,'Boo
 const SANS = `'Figtree',-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif`;
 
 const e = (s) => String(s).replace(/[&<>"']/g, (m) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]));
-const toolNames = () => CONFIG.tools.map((k) => ICONS[k].title).join(', ');
 
 // Every animation stops for visitors who turn on "reduce motion"; the still frame is the finished design.
 const svg = (W, H, label, body, style = '') => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="${e(label)}">
@@ -92,13 +91,11 @@ function header(mode) {
   return svg(1200, 320, `${CONFIG.name}. Software engineer in India, open to freelance projects. ${CONFIG.tagline.replace('&', 'and')}.`, body, style);
 }
 
-// ------------------------------------------------------------------ Tools: one row of logos
-function tools(mode) {
-  const c = THEMES[mode], size = 40, gap = 26, keys = CONFIG.tools;
-  const W = keys.length * size + (keys.length - 1) * gap;
-  const defs = '<defs>' + keys.map((k) => `<symbol id="i-${k}" viewBox="0 0 24 24"><path d="${ICONS[k].d}"/></symbol>`).join('') + '</defs>';
-  const uses = keys.map((k, i) => `<use href="#i-${k}" x="${i * (size + gap)}" y="0" width="${size}" height="${size}" fill="${c.ink}"/>`).join('');
-  return svg(W, size, `Tools: ${toolNames()}`, defs + uses);
+// ------------------------------------------------------------------ Tools: one small image per logo
+// Separate images so each one can carry its own name, which browsers show on hover.
+// The 24×24 logo sits in a 38×24 box; the side padding is the gap between logos.
+function tool(key, mode) {
+  return svg(38, 24, ICONS[key].title, `<path transform="translate(7 0)" d="${ICONS[key].d}" fill="${THEMES[mode].ink}"/>`);
 }
 
 // ------------------------------------------------------------------ Buttons
@@ -112,6 +109,8 @@ function button(b, mode) {
 // ------------------------------------------------------------------ README
 const picture = (base, alt, width = '100%') =>
   `<picture><source media="(prefers-color-scheme: dark)" srcset="assets/${base}-dark.svg"><img src="assets/${base}.svg"${width ? ` width="${width}"` : ''} alt="${e(alt)}"></picture>`;
+const toolIcon = (k) =>
+  `<picture><source media="(prefers-color-scheme: dark)" srcset="assets/tool-${k}-dark.svg"><img src="assets/tool-${k}.svg" height="22" alt="${e(ICONS[k].title)}" title="${e(ICONS[k].title)}"></picture>`;
 const buttonLink = (b) =>
   `<a href="${b.link}"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/${b.file}-dark.svg"><img src="assets/${b.file}.svg" height="44" alt="${e(b.alt)}"></picture></a>`;
 
@@ -125,7 +124,7 @@ ${picture('header', `${CONFIG.name}. Software engineer in India, open to freelan
 - On the side I build **websites, booking systems and online stores** for small businesses.
 - Lately: ${lately}.
 
-${picture('tools', `Tools: ${toolNames()}`, '520')}
+<p>${CONFIG.tools.map(toolIcon).join('')}</p>
 
 <br>
 
@@ -156,7 +155,7 @@ mkdirSync(ASSETS, { recursive: true });
 for (const mode of ['light', 'dark']) {
   const suffix = mode === 'dark' ? '-dark' : '';
   writeFileSync(join(ASSETS, `header${suffix}.svg`), header(mode));
-  writeFileSync(join(ASSETS, `tools${suffix}.svg`), tools(mode));
+  for (const k of CONFIG.tools) writeFileSync(join(ASSETS, `tool-${k}${suffix}.svg`), tool(k, mode));
   for (const b of CONFIG.buttons) writeFileSync(join(ASSETS, `${b.file}${suffix}.svg`), button(b, mode));
 }
 const md = readme();
