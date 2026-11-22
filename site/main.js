@@ -98,6 +98,22 @@
     });
   });
 
+  // Tool logo ring: a pause button (touch screens can't hover), and no spinning while it's off screen
+  var ringBox = document.querySelector('.icons-r');
+  var ringBtn = document.querySelector('.ring-toggle');
+  if (ringBox && ringBtn && !reduce) {
+    var userPaused = false, offscreen = false;
+    var syncRing = function () {
+      ringBox.classList.toggle('paused', userPaused || offscreen);
+      ringBtn.setAttribute('aria-pressed', String(userPaused));
+    };
+    ringBtn.hidden = false;
+    ringBtn.addEventListener('click', function () { userPaused = !userPaused; syncRing(); });
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (entries) { offscreen = !entries[0].isIntersecting; syncRing(); }).observe(ringBox);
+    }
+  }
+
   if (reduce || !('IntersectionObserver' in window)) return;
   root.classList.add('js');
   var io = new IntersectionObserver(function (entries) {
