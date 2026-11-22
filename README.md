@@ -2,7 +2,7 @@
 
 <picture><source media="(prefers-color-scheme: dark)" srcset="assets/header-dark.svg"><img src="assets/header.svg" width="100%" alt="Bhargav Angadi. Software engineer in India, open to freelance projects."></picture>
 
-- I’m an **Associate Software Engineer** at Torry Harris Business Solutions, building Java and Spring Boot backends and REST APIs.
+- I’m an **Associate Software Engineer** at Torry Harris Integration Solutions, building Java and Spring Boot backends and REST APIs.
 - On the side I build **websites, booking systems and online stores** for small businesses.
 - Lately: <a href="https://github.com/bhargavang/saffron-table">Saffron Table</a> · <a href="https://github.com/bhargavang/caredesk">CareDesk</a> · <a href="https://github.com/bhargavang/kora-threads-theme">Kora Threads</a> · <a href="https://github.com/bhargavang/Budgetx">BudgetX</a>.
 

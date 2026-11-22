@@ -25,7 +25,7 @@ const CONFIG = {
   monogram: 'BA',
   email: 'bhargav.angadi@gmail.com',
   role: 'Associate Software Engineer',
-  company: 'Torry Harris Business Solutions',
+  company: 'Torry Harris Integration Solutions',
   tagline: 'Java & Spring Boot backends · websites for small businesses',
   // Runs round the monogram; keep the trailing separator so the ends meet.
   ring: 'SOFTWARE ENGINEER · INDIA · OPEN TO FREELANCE · ',
